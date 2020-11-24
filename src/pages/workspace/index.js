@@ -516,7 +516,7 @@ class Index extends React.Component{
         {/* 左侧菜单 */}
         <div className={styles.tools} >
         <Tabs defaultActiveKey="1" className={styles.tabs} >
-          <TabPane tab="系统组件" key="1" >
+          <TabPane tab="系统组件" key="2" >
             {
               this.state.tools.map((item, index) => {
                 return (
@@ -538,9 +538,8 @@ class Index extends React.Component{
               })
             }
           </TabPane>
-          <TabPane  tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0}}>
-            <div>我的组件</div>
-            {/* <MyComponent /> */}
+          <TabPane  tab="我的组件" key="1" className={styles.tabsStyle} style={{ margin: 0}}>
+            <MyComponent />
           </TabPane>
           <TabPane tab="我的图片" key="3" style={{color:"red"}}>
             <div>我的图片</div>
