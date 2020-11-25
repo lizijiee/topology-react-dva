@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Popover, Button, Modal, Form, Input } from 'antd';
 import styles from './index.less';
+import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
 
 class myComponent extends React.Component{
@@ -9,8 +10,12 @@ class myComponent extends React.Component{
     ModalText: 'Content of the modal',
     visible: false,
     confirmLoading: false,
+    items:[
+        {id:1,name:'组件类别一'},
+        {id:2,name:'组件类别二'},
+        {id:3,name:'组件类别三'},
+      ]
   };
-
   componentDidMount() {
   }
   
@@ -48,56 +53,55 @@ class myComponent extends React.Component{
       }
     });
   };
+  moveDown(index){
+    this.resort(index,1);
+  }
+  resort(index,diff){
+    console.log(index,diff);
+    var items = this.state.items;
+    var item = items[index];
+    items.splice(index,1);
+    items.splice(index + diff,0,item);
+    console.log('items:',items)
+    this.setState({items:items});
+  }
   render() {
-      const { visible, confirmLoading, ModalText } = this.state;    
+      const { visible, confirmLoading, ModalText,items } = this.state;    
       const { getFieldDecorator } = this.props.form;
       const formItemLayout = {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       };
+      const customEnterAnimation = {
+        from: { transform: 'scale(0.5, 1)' },
+        to:   { transform: 'scale(1, 1)' }
+      };
     return (
       <>
       <div className={styles.tools}>
-        <div>
-          <div className={styles.group}>
-            <i className="iconfont icon-cube"></i>
-            <span className={styles.full}>组件类别一</span>
-            <SettingPopover  className={styles.className}/>
-          </div>
-          <div className={styles.buttons}>
-            <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
-            <span title="我来添加组件" draggable="true" className={styles.add}>
-              <i  className="iconfont icon-add"></i>
-            </span>
-          </div>
-        </div>
-        <div>
-          <div className={styles.group}>
-            <i className="iconfont icon-cube"></i>
-            <span className={styles.full}>组件类别二</span>
-            <SettingPopover  className={styles.className}/>
-          </div>
-          <div className={styles.buttons}>
-            <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
-            <span title="我来添加组件" draggable="true" className="add">
-              <i  className="iconfont icon-add"></i>
-            </span>
-          </div>
-        </div>
-        <div>
-          <div className={styles.group}>
-            <i className="iconfont icon-cube"></i>
-            <span className={styles.full}>组件类别三</span>
-            <SettingPopover  className={styles.className}/>
-          </div>
-          <div className={styles.buttons}>
-            <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
-            <span title="我来添加组件" draggable="true" className="add">
-              <i  className="iconfont icon-add"></i>
-            </span>
-          </div>
-        </div>
+        <FlipMove enterAnimation={customEnterAnimation}>
+            {
+              items.map(e => {
+                return (
+                  <div key={e.id}>
+                    <div className={styles.group}>
+                      <i className="iconfont icon-cube"></i>
+                      <span className={styles.full}>{e.name}</span>
+                      <SettingPopover  className={styles.className} moveDown={this.moveDown.bind(this)} id={e.id}/>
+                    </div>
+                    <div className={styles.buttons}>
+                      <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
+                      <span title="我来添加组件" draggable="true" className={styles.add}>
+                        <i className="iconfont icon-add"></i>
+                      </span>
+                    </div>
+                  </div>
+                )
+              })
+            }
+        </FlipMove>
       </div>
+
       <div className={styles.setting}>
         <button 
           className={styles.button} 
