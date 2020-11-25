@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import { Popover, Button } from 'antd';
 import styles from './index.less';
 
 class myComponent extends React.Component{
@@ -15,7 +16,14 @@ class myComponent extends React.Component{
           <div className={styles.group}>
             <i className="iconfont icon-cube"></i>
             <span className={styles.full}>组件类别一</span>
-            <i className="iconfont icon-config"></i>
+            <Popover 
+              placement="rightTop" 
+              // title={<div>content</div>} 
+              content={<div><div>向下移动</div><div>编辑</div><div>删除</div></div>} 
+              trigger="click"
+            >
+              <i className="topology topology-settings"></i>
+            </Popover>
           </div>
           <div className={styles.buttons}>
             <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
@@ -28,7 +36,7 @@ class myComponent extends React.Component{
           <div className={styles.group}>
             <i className="iconfont icon-cube"></i>
             <span className={styles.full}>组件类别二</span>
-            <i className="iconfont icon-config"></i>
+            <i className="topology topology-settings"></i>
           </div>
           <div className={styles.buttons}>
             <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
@@ -41,7 +49,7 @@ class myComponent extends React.Component{
           <div className={styles.group}>
             <i className="iconfont icon-cube"></i>
             <span className={styles.full}>组件类别三</span>
-            <i className="iconfont icon-config"></i>
+            <i className="topology topology-settings"></i>
           </div>
           <div className={styles.buttons}>
             <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
