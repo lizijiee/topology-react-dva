@@ -20,8 +20,12 @@ class settingPopover extends React.Component{
           overlayClassName={styles.popover}
           content={
             <ul>
-              <li><i className="iconfont icon-arrow-down" onClick={()=>{moveDown(i)}}/>下移</li>
-              <li><i className="iconfont icon-delete" />删除</li>
+              <li onClick={()=>{moveDown(i)}}>
+                <i className="iconfont icon-arrow-down" />下移
+              </li>
+              <li>
+                <i className="iconfont icon-delete" />删除
+              </li>
               <li><i className="iconfont icon-edit" />编辑</li>
             </ul>
           } 
