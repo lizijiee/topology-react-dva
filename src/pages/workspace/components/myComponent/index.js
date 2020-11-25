@@ -57,9 +57,9 @@ class myComponent extends React.Component{
     this.resort(index,1);
   }
   resort(index,diff){
-    console.log(index,diff);
-    var items = this.state.items;
-    var item = items[index];
+    let items = this.state.items;
+    let item = items[index];
+    console.log(index,item);
     items.splice(index,1);
     items.splice(index + diff,0,item);
     console.log('items:',items)
@@ -72,22 +72,18 @@ class myComponent extends React.Component{
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       };
-      const customEnterAnimation = {
-        from: { transform: 'scale(0.5, 1)' },
-        to:   { transform: 'scale(1, 1)' }
-      };
     return (
       <>
       <div className={styles.tools}>
-        <FlipMove enterAnimation={customEnterAnimation}>
+        <FlipMove>
             {
-              items.map(e => {
+              items.map((e,i) => {
                 return (
                   <div key={e.id}>
                     <div className={styles.group}>
                       <i className="iconfont icon-cube"></i>
                       <span className={styles.full}>{e.name}</span>
-                      <SettingPopover  className={styles.className} moveDown={this.moveDown.bind(this)} id={e.id}/>
+                      <SettingPopover  className={styles.className} moveDown={this.moveDown.bind(this)} i={i}/>
                     </div>
                     <div className={styles.buttons}>
                       <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
