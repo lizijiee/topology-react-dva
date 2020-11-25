@@ -27,6 +27,16 @@
       margin: .05rem .1rem .05rem 0;
       cursor: pointer;
     }
+    .add{
+      width: .28rem;
+      height: .28rem;
+      display: inline-flex;
+      color: #bfbfbf;
+      border: 1px dashed #d9d9d9;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
   }
 }
 
@@ -50,4 +60,25 @@
     width: 100%;
 
   }
+}
+.modal{
+  position: absolute;
+  left: 2.2rem;
+  top: unset;// 权重高于bottom需要先
+  bottom: 0;
+  :global(.ant-modal-close){
+      color: #fff;
+  }  
+  :global(.ant-modal-header){
+    background-color:#1890ff;
+  }  
+  :global(.ant-modal-title){
+      color: #fff;
+  }  
+  :global(.ant-modal-footer){
+    text-align:center;
+    :global(.ant-btn) {
+        margin-right: 50px;
+    } 
+  }  
 }
