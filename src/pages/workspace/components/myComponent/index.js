@@ -11,9 +11,9 @@ class myComponent extends React.Component{
     visible: false,
     confirmLoading: false,
     items:[
-        {id:1,name:'组件类别一'},
-        {id:2,name:'组件类别二'},
-        {id:3,name:'组件类别三'},
+        {id:1,name:'组件类别一', show: false},
+        {id:2,name:'组件类别二', show: false},
+        {id:3,name:'组件类别三', show: false},
       ]
   };
   componentDidMount() {
@@ -63,8 +63,29 @@ class myComponent extends React.Component{
     items.splice(index + diff,0,item);
     this.setState({items:items});
   }
+  componentWillReceiveProps(nextProps){
+    console.log('nextProps',nextProps)
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.yourModels !== this.props.yourModels) {
+      this.setState({
+          data: this.props.yourModels.data
+      })
+    }
+  }
+  toggleSetting(value){
+    console.log('e',value); // 取反
+    this.setState((prevState)=>{return prevState.items.map(e=>{
+      if(e.id===value.id){
+        e.show=!e.show;// 取反
+      }else{
+        e.show=false;
+      }
+      return e
+    })})
+  }
   render() {
-      const { visible, confirmLoading, ModalText,items } = this.state;    
+      const { visible, confirmLoading, ModalText, items } = this.state;    
       const { getFieldDecorator } = this.props.form;
       const formItemLayout = {
         labelCol: { span: 4 },
@@ -81,7 +102,13 @@ class myComponent extends React.Component{
                     <div className={styles.group}>
                       <i className="iconfont icon-cube"></i>
                       <span className={styles.full}>{e.name}</span>
-                      <SettingPopover  moveDown={this.moveDown.bind(this)} i={i} record={e} id='popover'/>
+                      <SettingPopover  
+                        moveDown={this.moveDown.bind(this)} 
+                        i={i} 
+                        record={e} 
+                        menuList={items} 
+                        toggleSetting={this.toggleSetting.bind(this)}
+                      />
                     </div>
                     <div className={styles.buttons}>
                       <img draggable="true" title="新组件" src={require("./image/thumb.png")} />

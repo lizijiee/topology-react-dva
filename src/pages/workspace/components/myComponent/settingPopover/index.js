@@ -12,34 +12,27 @@ class settingPopover extends React.Component{
       this.inputRef = React.createRef();
     }
 
-    state={
-      visible:false
-    }
     componentDidMount() {
       document.addEventListener('click', this.handleDocumentClick);
     }
-    
-    componentWillUnmount() {
-      document.removeEventListener('click', this.handleDocumentClick);
-    }
 
     handleDocumentClick=e=>{
-      if (!this.inputRef.current) {
+      if (!this.inputRef.current||!document.querySelectorAll('.ant-popover-content')[0]) {
       // if (!document.querySelectorAll(this.inputRef.current.tooltip.props.overlayClassName)[0]) {
         return;
       }
       // if (!document.querySelectorAll('.ant-popover-content')[0].contains(e.target) && this.inputRef.current !== e.target) { // 点击自身禁止关闭避免和打开冲突
       if (!document.querySelectorAll('.ant-popover-content')[0].contains(e.target)) {
-        this.setState({
-          visible: false,
-        });
+        this.props.toggleSetting({})
       }
     };
 
-    doShow(e){
+    stopPropa(e){
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
-      this.setState({visible:true})
+      // this.setState(currentState=>({
+      //   visible: !currentState.visible
+      // }))
     }
 
     doClose(visible){
@@ -48,8 +41,7 @@ class settingPopover extends React.Component{
       }))
     }
   render() {
-    const { moveDown, i, record} = this.props;
-    const {visible} = this.state;
+    const { moveDown, i, record, menuList, toggleSetting} = this.props;
     
     return (
       <div >
@@ -59,34 +51,38 @@ class settingPopover extends React.Component{
           ref="targetRef"
           ref={this.inputRef}
           style={{display:'none'}}
-          visible={visible}
+          visible={record.show}
           // destroyTooltipOnHide
           content={
-            <ul 
-              onClick={(e)=>{
-                moveDown(i);
-                this.doClose(visible);
-              }}
-            >
-              <li>
+            <ul >
+              <li
+                onClick={(e)=>{
+                  moveDown(i);
+                  toggleSetting(record)
+                }}
+              >
                 <i className="iconfont icon-arrow-down" />下移
               </li>
               <li 
                  onClick={()=>{
-                   console.log("删除项为：",record);
-                  //  this.setState({visible:!visible})
-                  // moveDown(i);
-                  // this.close(visible);
+                   console.log("删除项为：",record);        
+                  //  toggleSetting({}); // 数据提交成功返回200,关闭popover
                 }}
               >
                 <i className="iconfont icon-delete" />删除
               </li>
-              <li><i className="iconfont icon-edit" />编辑</li>
+              <li
+              >
+               <i className="iconfont icon-edit" />编辑
+              </li>
             </ul>
           } 
           trigger="click"
         >
-          <i className="topology topology-settings" onClick={(e)=>{this.doShow(e)}}></i>
+          <i className="topology topology-settings" onClick={(e)=>{
+            this.stopPropa(e);
+            toggleSetting(record);
+            }}></i>
         </Popover>
       </div>)
   }
