@@ -59,10 +59,8 @@ class myComponent extends React.Component{
   resort(index,diff){
     let items = this.state.items;
     let item = items[index];
-    console.log(index,item);
     items.splice(index,1);
     items.splice(index + diff,0,item);
-    console.log('items:',items)
     this.setState({items:items});
   }
   render() {
@@ -83,7 +81,7 @@ class myComponent extends React.Component{
                     <div className={styles.group}>
                       <i className="iconfont icon-cube"></i>
                       <span className={styles.full}>{e.name}</span>
-                      <SettingPopover  className={styles.className} moveDown={this.moveDown.bind(this)} i={i}/>
+                      <SettingPopover  moveDown={this.moveDown.bind(this)} i={i} record={e} id='popover'/>
                     </div>
                     <div className={styles.buttons}>
                       <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
