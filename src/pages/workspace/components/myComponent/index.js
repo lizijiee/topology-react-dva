@@ -20,13 +20,13 @@ class myComponent extends React.Component{
   };
   componentDidMount() {
   }
-  
+
   showModal = () => {
     this.setState({
       visible: true,
     });
   };
-  
+
   handleOk =async () => {
     // 提交数据
     this.setState({
@@ -48,10 +48,10 @@ class myComponent extends React.Component{
     });
   };
   check = () => {
-    this.props.form.validateFields(err => {
+    this.props.form.validateFields((err,values) => {
       if (!err) {
         this.handleOk()
-        console.info('success');
+        console.info('success', values);// values= { username: "12312312" }
       }
     });
   };
@@ -65,9 +65,9 @@ class myComponent extends React.Component{
     items.splice(index + diff,0,item);
     this.setState({items:items});
   }
-  componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps)
-  }
+  // componentWillReceiveProps(nextProps){
+  //   console.log('nextProps',nextProps)
+  // }
   componentDidUpdate(prevProps) {
     if (prevProps.yourModels !== this.props.yourModels) {
       this.setState({
@@ -101,7 +101,7 @@ class myComponent extends React.Component{
   };
 
   render() {
-      const { visible, confirmLoading, ModalText, items } = this.state;    
+      const { visible, confirmLoading, ModalText, items } = this.state;
       const { getFieldDecorator } = this.props.form;
       const formItemLayout = {
         labelCol: { span: 4 },
@@ -118,11 +118,11 @@ class myComponent extends React.Component{
                     <div className={styles.group}>
                       <i className="iconfont icon-cube"></i>
                       <span className={styles.full}>{e.name}</span>
-                      <SettingPopover  
-                        moveDown={this.moveDown.bind(this)} 
-                        i={i} 
-                        record={e} 
-                        items={items} 
+                      <SettingPopover
+                        moveDown={this.moveDown.bind(this)}
+                        i={i}
+                        record={e}
+                        items={items}
                         hidePopover={this.hidePopover}
                         showPopover={this.showPopover}
                         state={this.state}
@@ -142,8 +142,8 @@ class myComponent extends React.Component{
       </div>
 
       <div className={styles.setting}>
-        <button 
-          className={styles.button} 
+        <button
+          className={styles.button}
           onClick={this.showModal}
         > + 添加组件库</button>
       </div>
@@ -154,7 +154,7 @@ class myComponent extends React.Component{
         cancelText="取消"
         bodyStyle={{padding: "15px 24px 10px 24px"}}
         destroyOnClose={true}
-        className={styles.modal} 
+        className={styles.modal}
         visible={visible}
         onOk={this.check}
         confirmLoading={confirmLoading}
