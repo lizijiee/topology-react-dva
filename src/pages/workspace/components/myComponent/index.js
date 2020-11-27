@@ -14,7 +14,9 @@ class myComponent extends React.Component{
         {id:1,name:'组件类别一', show: false},
         {id:2,name:'组件类别二', show: false},
         {id:3,name:'组件类别三', show: false},
-      ]
+    ],
+    visiblePopover: false,
+    show: 0,
   };
   componentDidMount() {
   }
@@ -84,6 +86,20 @@ class myComponent extends React.Component{
       return e
     })})
   }
+  hidePopover = () => {
+    this.setState({
+      visiblePopover: false,
+      show: 0
+    });
+  };
+  showPopover = (visiblePopover,show) => {
+    if(visiblePopover){
+      this.setState({ visiblePopover,show:show });
+    }else{
+      this.setState({ visiblePopover,show:0});
+    }
+  };
+
   render() {
       const { visible, confirmLoading, ModalText, items } = this.state;    
       const { getFieldDecorator } = this.props.form;
@@ -106,8 +122,10 @@ class myComponent extends React.Component{
                         moveDown={this.moveDown.bind(this)} 
                         i={i} 
                         record={e} 
-                        menuList={items} 
-                        toggleSetting={this.toggleSetting.bind(this)}
+                        items={items} 
+                        hidePopover={this.hidePopover}
+                        showPopover={this.showPopover}
+                        state={this.state}
                       />
                     </div>
                     <div className={styles.buttons}>
