@@ -15,13 +15,13 @@ class settingPopover extends React.Component{
     }
 
   render() {
-    const { moveDown, i, record, items, hidePopover, showPopover, state} = this.props;
+    const { moveDown, i, record, items, hidePopover, showPopover, state, showInput} = this.props;
     return (
       <div >
-        <Popover 
-          placement="rightTop" 
+        <Popover
+          placement="rightTop"
           overlayClassName={styles.popover}
-          visible={state.show === record.id && state.visiblePopover} // 修改变成record.id
+          visible={state.show === record.id && state.showPopover} // 修改变成record.id
           onVisibleChange={(e)=>showPopover(e,record.id)}
           // destroyTooltipOnHide
           content={
@@ -29,14 +29,17 @@ class settingPopover extends React.Component{
               <li onClick={(e)=>{ moveDown(i);hidePopover(); }}>
                 <i className="iconfont icon-arrow-down" />下移
               </li>
-              <li  onClick={()=>{console.log("删除项为：",record);  /*  hidePopover(); 数据提交成功返回200,调用hidePopover  */     }}>
+              <li onClick={()=>{console.log("删除项为：",record);  /*  hidePopover(); 数据提交成功返回200,调用hidePopover  */     }}>
                 <i className="iconfont icon-delete" />删除
               </li>
-              <li>
+              <li onClick={(e)=>{
+                hidePopover();
+                showInput(e,record.id);
+              }}>
                <i className="iconfont icon-edit" />编辑
               </li>
             </ul>
-          } 
+          }
           trigger="click"
         >
           <i className="topology topology-settings"></i>

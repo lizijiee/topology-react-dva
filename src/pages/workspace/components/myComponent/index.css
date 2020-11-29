@@ -1,0 +1,80 @@
+.tools {
+  padding: 0 0.1rem;
+  margin-bottom: 0.5rem;
+}
+.tools .group {
+  display: flex;
+  align-items: center;
+  margin-top: 0.15rem;
+  color: #434343;
+  cursor: pointer;
+  user-select: none;
+}
+.tools .group .full {
+  width: 100%!important;
+  margin-left: 0.05rem !important;
+  font-size: 12px;
+}
+.tools .buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-left: 0.2rem;
+  line-height: 1;
+}
+.tools .buttons > img {
+  width: 0.3rem;
+  max-height: 0.3rem;
+  margin: 0.05rem 0.1rem 0.05rem 0;
+  cursor: pointer;
+}
+.tools .buttons .add {
+  width: 0.28rem;
+  height: 0.28rem;
+  display: inline-flex;
+  color: #bfbfbf;
+  border: 1px dashed #d9d9d9;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.setting {
+  position: absolute;
+  bottom: 0;
+  height: 0.3rem;
+  width: 100%;
+}
+.setting .button {
+  outline: none;
+  border: 1px solid #bfbfbf;
+  border-radius: 0.02rem;
+  color: #434343;
+  background-color: #fff;
+  padding: 0 0.15rem;
+  line-height: 0.28rem;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+.modal {
+  position: absolute;
+  left: 2.2rem;
+  top: unset;
+  bottom: 0;
+}
+.modal :global(.ant-modal-close) {
+  color: #fff;
+}
+.modal :global(.ant-modal-header) {
+  background-color: #1890ff;
+}
+.modal :global(.ant-modal-title) {
+  color: #fff;
+}
+.modal :global(.ant-modal-footer) {
+  text-align: center;
+}
+.modal :global(.ant-modal-footer) :global(.ant-btn) {
+  margin-right: 50px;
+}

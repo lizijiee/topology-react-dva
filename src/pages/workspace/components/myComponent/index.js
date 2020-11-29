@@ -4,19 +4,22 @@ import { Popover, Button, Modal, Form, Input } from 'antd';
 import styles from './index.less';
 import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
+import ChangeInput from './ChangeInput';
 
 class myComponent extends React.Component{
   state = {
-    ModalText: 'Content of the modal',
+    ModalText: 'Content of the modal',    //
     visible: false,
     confirmLoading: false,
     items:[
-        {id:1,name:'组件类别一', show: false},
-        {id:2,name:'组件类别二', show: false},
-        {id:3,name:'组件类别三', show: false},
+        {id:1,name:'组件类别一'},
+        {id:2,name:'组件类别二'},
+        {id:3,name:'组件类别三'},
     ],
-    visiblePopover: false,
-    show: 0,
+    show: 0,                    // 列表气泡卡片索引
+    showPopover: false,         // 气泡卡片显示隐藏
+    index: 0,                   // 列表输入框索引
+    showInput: false            // 输入框显示隐藏
   };
   componentDidMount() {
   }
@@ -27,7 +30,7 @@ class myComponent extends React.Component{
     });
   };
 
-  handleOk =async () => {
+  submitOk =async () => {
     // 提交数据
     this.setState({
       ModalText: 'The modal will be closed after two seconds',
@@ -50,7 +53,7 @@ class myComponent extends React.Component{
   check = () => {
     this.props.form.validateFields((err,values) => {
       if (!err) {
-        this.handleOk()
+        this.submitOk();
         console.info('success', values);// values= { username: "12312312" }
       }
     });
@@ -69,34 +72,52 @@ class myComponent extends React.Component{
   //   console.log('nextProps',nextProps)
   // }
   componentDidUpdate(prevProps) {
-    if (prevProps.yourModels !== this.props.yourModels) {
-      this.setState({
-          data: this.props.yourModels.data
-      })
-    }
-  }
-  toggleSetting(value){
-    console.log('e',value); // 取反
-    this.setState((prevState)=>{return prevState.items.map(e=>{
-      if(e.id===value.id){
-        e.show=!e.show;// 取反
-      }else{
-        e.show=false;
-      }
-      return e
-    })})
+    // if (prevProps.yourModels !== this.props.yourModels) {
+    //   this.setState({
+    //       data: this.props.yourModels.data
+    //   })
+    // }
   }
   hidePopover = () => {
     this.setState({
-      visiblePopover: false,
+      showPopover: false,
       show: 0
     });
   };
-  showPopover = (visiblePopover,show) => {
-    if(visiblePopover){
-      this.setState({ visiblePopover,show:show });
+  showPopover = (showPopover,show) => {
+    if(showPopover){
+      this.setState({ showPopover,show:show });
     }else{
-      this.setState({ visiblePopover,show:0});
+      this.setState({ showPopover,show:0});
+    }
+  };
+  handleOk = (value) => {
+    this.setState((prevState)=>({items:prevState.items.map((e)=>e.id===value.id?value:e)}))
+    console.log('编辑组件库完成',value); //{type: "4543543543"} 修改完成值
+  }
+  //点击展示输入框
+  handleChangeClick = () => {
+    this.setState({
+        showInput:true
+    })
+  };
+  //点击关闭输入框
+  handleCloseClick = () => {
+    this.setState({
+        showInput:!this.state.showInput
+    })
+  };
+  hideInput = () => {
+    this.setState({
+      showInput: false,
+      index: 0
+    });
+  };
+  showInput = (showInput,index) => {
+    if(showInput){
+      this.setState({ showInput,index:index });
+    }else{
+      this.setState({ showInput,index:0});
     }
   };
 
@@ -117,7 +138,25 @@ class myComponent extends React.Component{
                   <div key={e.id}>
                     <div className={styles.group}>
                       <i className="iconfont icon-cube"></i>
-                      <span className={styles.full}>{e.name}</span>
+                      {/* <span className={styles.full}>{e.name}</span> */}
+                      <ChangeInput
+                        fontSize='12px'            //显示字体大小
+                        iconColor="#5f68ea"        //鼠标滑过icon图标颜色
+                        inputWidth="1rem"         //输入框宽度，高度自适应
+                        showSize="30"              //可展示字数，溢出隐藏，滑过展示全部
+                        amount="30"                //字数限制长度
+                        type="number"              //可输入类型
+                        handleOk={this.handleOk}   //点击对号回调
+                        value={e.name}             //传入内容
+                        name="name"             //回显数据键名
+                        required={true}         // 是否进行验证
+                        idName='id'             // 添加键名为idName值
+                        id={e.id}               // 设置id键值
+                        record={e}
+                        state={this.state}
+                        showInput={this.showInput}
+                        hideInput={this.hideInput}
+                      />
                       <SettingPopover
                         moveDown={this.moveDown.bind(this)}
                         i={i}
@@ -126,6 +165,7 @@ class myComponent extends React.Component{
                         hidePopover={this.hidePopover}
                         showPopover={this.showPopover}
                         state={this.state}
+                        showInput={this.showInput}
                       />
                     </div>
                     <div className={styles.buttons}>
@@ -162,14 +202,14 @@ class myComponent extends React.Component{
       >
         {/* <p>{ModalText}</p> */}
         <Form.Item {...formItemLayout} label="名称">
-          {getFieldDecorator('username', {
+          {getFieldDecorator('type', {
             rules: [
               {
                 required: true,
                 message: '名称输入不能为空',
               },
             ],
-          })(<Input placeholder="请输入名称" />)}
+          })(<Input placeholder="请输入组件库名称" />)}
         </Form.Item>
       </Modal>
       </>
