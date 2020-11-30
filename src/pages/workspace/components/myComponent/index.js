@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Popover, Button, Modal, Form, Input } from 'antd';
+import { Popover, Button, Modal, Form, Input, Popconfirm, message } from 'antd';
 import styles from './index.less';
 import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
@@ -120,7 +120,14 @@ class myComponent extends React.Component{
       this.setState({ showInput,index:0});
     }
   };
-
+  confirm(e) {
+    console.log(e);
+    message.success('删除当前组件');
+  }
+  cancel(e) {
+    console.log(e);
+    message.error('取消删除当前组件');
+  }
   render() {
       const { visible, confirmLoading, ModalText, items } = this.state;
       const { getFieldDecorator } = this.props.form;
@@ -169,7 +176,19 @@ class myComponent extends React.Component{
                       />
                     </div>
                     <div className={styles.buttons}>
-                      <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
+                      <div className={styles.wrapper}>
+                      <Popconfirm
+                        title="是否确认删除？"
+                        onConfirm={this.confirm}
+                        onCancel={this.cancel}
+                        okText="确定"
+                        cancelText="取消"
+                      >
+                        <i className={["iconfont icon-close",styles.close].join(' ')}/>
+                      </Popconfirm>
+
+                        <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
+                      </div>
                       <span title="我来添加组件" draggable="true" className={styles.add}>
                         <i className="iconfont icon-add"></i>
                       </span>

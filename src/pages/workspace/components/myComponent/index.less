@@ -21,21 +21,36 @@
     flex-wrap: wrap;
     padding-left: .2rem;
     line-height: 1;
-    >img{
-      width: .3rem;
-      max-height: .3rem;
-      margin: .05rem .1rem .05rem 0;
-      cursor: pointer;
-    }
-    .add{
-      width: .28rem;
-      height: .28rem;
-      display: inline-flex;
-      color: #bfbfbf;
-      border: 1px dashed #d9d9d9;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
+    position: relative;
+    .wrapper{
+      &:hover .close{
+        display: block;
+      }
+      .close{
+        display: none;
+        position: absolute;
+        top: .05rem;
+        left: .45rem;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      img{
+        display: inline-block;
+        width: .3rem;
+        max-height: .3rem;
+        margin: .05rem .1rem .05rem 0;
+        cursor: pointer;
+      }
+      .add{
+        width: .28rem;
+        height: .28rem;
+        display: inline-flex;
+        color: #bfbfbf;
+        border: 1px dashed #d9d9d9;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
     }
   }
 }

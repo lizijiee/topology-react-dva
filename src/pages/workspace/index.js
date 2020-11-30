@@ -550,9 +550,10 @@ class Index extends React.Component{
         {/* 画布 */}
         <div id="topology-canvas" className={styles.full} onContextMenu={this.hanleContextMenu} />
         {/* 右侧菜单 */}
-        <div className={styles.props}>
+        {/* <div className={styles.props}>
           <CanvasProps data={this.state.selected} onValuesChange={this.handlePropsChange} />
-        </div>
+        </div> 
+        */}
         {/* 画布右键菜单 */}
         <div style={this.state.contextmenu} >
           <CanvasContextMenu data={this.state.selected} canvas={this.canvas} />
