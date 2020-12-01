@@ -46,8 +46,13 @@ import {
   flowParallel,
   flowParallelAnchors,
   flowComment,
-  flowCommentAnchors
+  flowCommentAnchors,
+  myShape,  // 形状
+  myIconRect,  // 图片位置区域
+  myTextRect,  //文字位置区域
+  myAnchors  //锚点
 } from 'topology-flow-diagram';
+import { rectangle } from 'topology-core/middles/nodes/rectangle';
 
 import {
   activityFinal,
@@ -90,6 +95,7 @@ import CanvasContextMenu from './components/canvasContextMenu';
 import MyComponent from './components/myComponent';
 import MyPicture from './components/myPicture';
 import { Tabs } from 'antd';
+import myAnchorFn from './myAnchorFn.js'
 
 const { TabPane } = Tabs;
 const C2S = window.C2S;
@@ -123,7 +129,6 @@ class Index extends React.Component{
 
   componentDidMount() {
     this.canvasRegister();
-    console.log(canvasOptions)
     canvasOptions.on = this.onMessage;
     this.canvas = new Topology('topology-canvas', this.canvasOptions);
 
@@ -143,6 +148,7 @@ class Index extends React.Component{
   }
 
   canvasRegister() {
+    registerNode('rectangle', rectangle , myAnchorFn, null, null, true);
     registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
     registerNode('flowSubprocess', flowSubprocess, null, flowSubprocessIconRect, flowSubprocessTextRect);
     registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
@@ -516,7 +522,7 @@ class Index extends React.Component{
         {/* 左侧菜单 */}
         <div className={styles.tools} >
         <Tabs defaultActiveKey="1" className={styles.tabs} >
-          <TabPane tab="系统组件" key="2" >
+          <TabPane tab="系统组件" key="1" >
             {
               this.state.tools.map((item, index) => {
                 return (
@@ -538,7 +544,7 @@ class Index extends React.Component{
               })
             }
           </TabPane>
-          <TabPane  tab="我的组件" key="1" className={styles.tabsStyle} style={{ margin: 0}}>
+          <TabPane  tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0}}>
             <MyComponent />
           </TabPane>
           <TabPane tab="我的图片" key="3" style={{color:"red"}}>
@@ -552,7 +558,7 @@ class Index extends React.Component{
         {/* 右侧菜单 */}
         {/* <div className={styles.props}>
           <CanvasProps data={this.state.selected} onValuesChange={this.handlePropsChange} />
-        </div> 
+        </div>
         */}
         {/* 画布右键菜单 */}
         <div style={this.state.contextmenu} >

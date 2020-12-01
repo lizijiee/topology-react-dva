@@ -1,6 +1,30 @@
 
 export const Tools = [
   {
+    group: '自定义组件',
+    children: [
+      {
+        name: 'sanjiaoxing',
+        icon: 'icon-rect',
+        data: {
+          text: 'Topology',
+          rect: {
+            width: 100,
+            height: 100
+          },
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingTop: 10,
+          paddingBottom: 10,
+          name: 'rectangle',
+          icon: '\ue64d',
+          iconFamily: 'topology',
+          iconColor: '#2f54eb'
+        }
+      }
+    ]
+  },
+  {
     group: '基本形状',
     children: [
       {
