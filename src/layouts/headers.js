@@ -43,6 +43,7 @@ class Headers extends React.Component{
           const text = e.target.result + '';
           try {
             const data = JSON.parse(text);
+            console.log(this.props.canvas)
             const canvasOptions={
               rotateCursor: '/img/rotate.cur'
             };
@@ -76,20 +77,20 @@ class Headers extends React.Component{
       case 'new':
         router.push('/workspace')
         break
-      // case 'open':
-      //   router.push('/workspace')
-      //   setTimeout(() => {
-      //     this.props.dispatch({
-      //       type: 'event/emit',
-      //       payload: {
-      //         event: key
-      //       }
-      //     });
-      //   }, 100)
-      //   break
-      case 'replace': // 导入本地文件
-        this.onHandleImportJson();
+      case 'open':
+        router.push('/workspace')
+        setTimeout(() => {
+          this.props.dispatch({
+            type: 'event/emit',
+            payload: {
+              event: key
+            }
+          });
+        }, 100)
         break
+      // case 'replace': // 导入本地文件
+      //   this.onHandleImportJson();
+      //   break
       case 'about':
         this.setState({
           about: true,
@@ -125,7 +126,6 @@ class Headers extends React.Component{
   render(){
     const { data } = this.props.canvas;
     const { current } = this.props.user;
-
     const scale = Math.floor(data.scale * 100);
     const accountUrl = `https://account.le5le.com?cb=${encodeURIComponent(
       window.location.href
@@ -146,7 +146,7 @@ class Headers extends React.Component{
           </Menu.Item>
           <SubMenu title="文件" className={styles.item}>
             <Menu.Item key="new" className={styles.subTtem}>新建文件</Menu.Item>
-            {/* <Menu.Item key="open" className={styles.subTtem}>打开本地文件（新建）</Menu.Item> */}
+            <Menu.Item key="open" className={styles.subTtem}>打开本地文件（新建）</Menu.Item>
             <Menu.Item key="replace" className={styles.subTtem}>打开本地文件</Menu.Item>
             <Menu.Divider>{}</Menu.Divider>
             <Menu.Item key="save" className={styles.subTtem}>保存到本地</Menu.Item>
@@ -234,5 +234,4 @@ class Headers extends React.Component{
     );
   }
 }
-export default connect((state) => ({ canvas: state.canvas, user: state.user }))(Headers);
-
+export default connect((state) => ({ canvas: state.canvas, user: state.user}))(Headers);

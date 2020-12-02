@@ -99,10 +99,10 @@ import myAnchorFn from './myAnchorFn.js'
 
 const { TabPane } = Tabs;
 const C2S = window.C2S;
-const canvasOptions={
+const canvasOptions = {
   rotateCursor: '/img/rotate.cur'
 };
-class Index extends React.Component{
+class Index extends React.Component {
 
   state = {
     id: '',
@@ -131,7 +131,7 @@ class Index extends React.Component{
     this.canvasRegister();
     canvasOptions.on = this.onMessage;
     this.canvas = new Topology('topology-canvas', this.canvasOptions);
-
+    // console.log('this.canvas',this.canvas);
     document.onclick = event => {
       this.setState({
         contextmenu: {
@@ -142,13 +142,12 @@ class Index extends React.Component{
         }
       });
     }
-
     this.setState({ id: this.props.location.query.id });
     this.getTopo(this.props.location.query.id);
   }
 
   canvasRegister() {
-    registerNode('rectangle', rectangle , myAnchorFn, null, null, true);
+    registerNode('rectangle', rectangle, myAnchorFn, null, null, true);
     registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
     registerNode('flowSubprocess', flowSubprocess, null, flowSubprocessIconRect, flowSubprocessTextRect);
     registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
@@ -377,15 +376,15 @@ class Index extends React.Component{
     input.onchange = event => {
       const elem = event.srcElement || event.target;
       if (elem.files && elem.files[0]) {
-        const name = elem.files[0].name.replace('.json', '');
+        // const name = elem.files[0].name.replace('.json', '');
         const reader = new FileReader();
         reader.onload = (e) => {
           const text = e.target.result + '';
           try {
             const data = JSON.parse(text);
-            if (data && Array.isArray(data.nodes) && Array.isArray(data.lines)) {
-              this.canvas.open(data);
-            }
+            // if (data && Array.isArray(data.nodes) && Array.isArray(data.lines)) {
+            this.canvas.open(data);
+            // }
           } catch (e) {
             return false;
           }
@@ -517,40 +516,41 @@ class Index extends React.Component{
   }
 
   render() {
+
     return (
       <div className={styles.page}>
         {/* 左侧菜单 */}
         <div className={styles.tools} >
-        <Tabs defaultActiveKey="1" className={styles.tabs} >
-          <TabPane tab="系统组件" key="1" >
-            {
-              this.state.tools.map((item, index) => {
-                return (
-                  <div key={index}>
-                    <div className={styles.title}>{item.group}</div>
-                    <div className={styles.buttons}>
-                      {
-                        item.children.map((btn, i) => {
-                          return (
-                            <a key={i} title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
-                              <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
-                            </a>
-                          )
-                        })
-                      }
+          <Tabs defaultActiveKey="1" className={styles.tabs} >
+            <TabPane tab="系统组件" key="1" >
+              {
+                this.state.tools.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <div className={styles.title}>{item.group}</div>
+                      <div className={styles.buttons}>
+                        {
+                          item.children.map((btn, i) => {
+                            return (
+                              <a key={i} title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
+                                <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
+                              </a>
+                            )
+                          })
+                        }
+                      </div>
                     </div>
-                  </div>
-                )
-              })
-            }
-          </TabPane>
-          <TabPane  tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0}}>
-            <MyComponent />
-          </TabPane>
-          <TabPane tab="我的图片" key="3" style={{color:"red"}}>
-            <div>我的图片</div>
-            {/* <MyPicture /> */}
-          </TabPane>
+                  )
+                })
+              }
+            </TabPane>
+            <TabPane tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
+              <MyComponent />
+            </TabPane>
+            <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
+              <div>我的图片</div>
+              {/* <MyPicture /> */}
+            </TabPane>
           </Tabs>
         </div>
         {/* 画布 */}
@@ -569,4 +569,4 @@ class Index extends React.Component{
   }
 }
 
-export default connect((state) => ({ event: state.event }))(Index);
+export default connect((state) => ({ event: state.event}))(Index);
