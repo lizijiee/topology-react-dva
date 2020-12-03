@@ -19,7 +19,8 @@ class myComponent extends React.Component{
     show: 0,                    // 列表气泡卡片索引
     showPopover: false,         // 气泡卡片显示隐藏
     index: 0,                   // 列表输入框索引
-    showInput: false            // 输入框显示隐藏
+    showInput: false,           // 输入框显示隐藏
+    isModalVisible: false       // 编辑组件显示隐藏
   };
   componentDidMount() {
   }
@@ -58,7 +59,7 @@ class myComponent extends React.Component{
       }
     });
   };
-  moveDown(index){
+  moveDown=(index) => {
     this.resort(index,1);
   }
   resort(index,diff){
@@ -128,6 +129,16 @@ class myComponent extends React.Component{
     console.log(e);
     message.error('取消删除当前组件');
   }
+  showEditComponnetModal = () => {
+    this.setState({
+      isModalVisible: true,
+    });
+  }
+  closeEditComponnetModal = () => {
+    this.setState({
+      isModalVisible: false,
+    });
+  }
   render() {
       const { visible, confirmLoading, ModalText, items } = this.state;
       const { getFieldDecorator } = this.props.form;
@@ -165,7 +176,7 @@ class myComponent extends React.Component{
                         hideInput={this.hideInput}
                       />
                       <SettingPopover
-                        moveDown={this.moveDown.bind(this)}
+                        moveDown={this.moveDown}
                         i={i}
                         record={e}
                         items={items}
@@ -189,9 +200,23 @@ class myComponent extends React.Component{
 
                         <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
                       </div>
-                      <span title="我来添加组件" draggable="true" className={styles.add}>
+                      <span
+                        title="我来添加组件"
+                        draggable="true"
+                        className={styles.add}
+                        onClick={this.showEditComponnetModal}
+                      >
                         <i className="iconfont icon-add"></i>
                       </span>
+                      <Modal
+                        title="请选择对组件操作"
+                        visible={this.state.isModalVisible}
+                        // onOk={handleOk}
+                        onCancel={this.closeEditComponnetModal}
+                      >
+                        <p>上传组件图片</p>
+                        <p>绘制组件</p>
+                      </Modal>
                     </div>
                   </div>
                 )

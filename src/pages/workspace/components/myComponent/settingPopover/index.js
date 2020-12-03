@@ -42,7 +42,7 @@ class settingPopover extends React.Component{
           }
           trigger="click"
         >
-          <i className="topology topology-settings"></i>
+          <i className="topology topology-settings" style={{cursor:"pointer"}}></i>
         </Popover>
       </div>)
   }
