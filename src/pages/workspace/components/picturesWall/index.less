@@ -1,0 +1,32 @@
+
+.up-load{
+  :global(.ant-upload-list-picture-card-container){
+    width: .5rem;
+    height: .5rem;
+    margin: .2rem .05rem 0;
+    display: inline-block;
+    text-align: center;
+    :global(.ant-upload-list-item){
+      width: .5rem;
+      height: .5rem;
+      padding: 0;
+      :global(.ant-upload-list-item-info::before){
+        left: 0;
+      }
+      :global(.ant-upload-list-item-actions){
+        >a{
+          display: none;
+        }
+      }
+    }
+    img{
+      width: .5rem;
+      height: .5rem;
+    }
+  }
+  :global(.ant-upload){
+    width: 0.5rem;
+    height: 0.5rem;
+    margin: .2rem .05rem 0;
+  }
+}

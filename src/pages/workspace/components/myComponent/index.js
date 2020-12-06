@@ -4,8 +4,7 @@ import { Popover, Button, Modal, Form, Input, Popconfirm, message } from 'antd';
 import styles from './index.less';
 import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
-import ChangeInput from './ChangeInput';
-
+import ChangeInput from './changeInput';
 class myComponent extends React.Component{
   state = {
     ModalText: 'Content of the modal',    //
@@ -146,6 +145,21 @@ class myComponent extends React.Component{
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       };
+      const changeInputProps={
+        fontSize:'12px',              // 显示字体大小
+        iconColor:"#5f68ea",          // 鼠标滑过icon图标颜色
+        inputWidth:"1rem",            // 输入框宽度，高度自适应
+        showSize:"30",                // 可展示字数，溢出隐藏，滑过展示全部
+        amount:"30",                  // 字数限制长度
+        type:"number",                // 可输入类型
+        name:"name",                  // 回显数据键名
+        required:true,                // 是否进行验证
+        idName:'id',                  // 添加键名为idName值
+        state:this.state,
+        handleOk:this.handleOk,       // 点击对号回调
+        showInput:this.showInput,     // 显示输入框
+        hideInput:this.hideInput,     // 隐藏输入框
+      }
     return (
       <>
       <div className={styles.tools}>
@@ -158,22 +172,10 @@ class myComponent extends React.Component{
                       <i className="iconfont icon-cube"></i>
                       {/* <span className={styles.full}>{e.name}</span> */}
                       <ChangeInput
-                        fontSize='12px'            //显示字体大小
-                        iconColor="#5f68ea"        //鼠标滑过icon图标颜色
-                        inputWidth="1rem"         //输入框宽度，高度自适应
-                        showSize="30"              //可展示字数，溢出隐藏，滑过展示全部
-                        amount="30"                //字数限制长度
-                        type="number"              //可输入类型
-                        handleOk={this.handleOk}   //点击对号回调
-                        value={e.name}             //传入内容
-                        name="name"             //回显数据键名
-                        required={true}         // 是否进行验证
-                        idName='id'             // 添加键名为idName值
-                        id={e.id}               // 设置id键值
+                        value={e.name}            //传入内容
+                        id={e.id}                 // 设置id键值
                         record={e}
-                        state={this.state}
-                        showInput={this.showInput}
-                        hideInput={this.hideInput}
+                        {...changeInputProps}
                       />
                       <SettingPopover
                         moveDown={this.moveDown}
@@ -209,13 +211,18 @@ class myComponent extends React.Component{
                         <i className="iconfont icon-add"></i>
                       </span>
                       <Modal
-                        title="请选择对组件操作"
+                        className={styles['edit-modal']}
+                        title="请选择操作"
+                        okText="确定"
+                        cancelText="取消"
                         visible={this.state.isModalVisible}
                         // onOk={handleOk}
                         onCancel={this.closeEditComponnetModal}
+                        footer={null}
                       >
-                        <p>上传组件图片</p>
-                        <p>绘制组件</p>
+                       {/* <PicturesWall /> */}
+                        <p onClick={()=>{this.setState({isModalVisible:false})}}>上传组件图片</p>
+                        <p onClick={()=>{this.setState({isModalVisible:false})}}>绘制组件</p>
                       </Modal>
                     </div>
                   </div>
