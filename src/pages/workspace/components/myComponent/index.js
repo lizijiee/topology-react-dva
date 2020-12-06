@@ -199,7 +199,6 @@ class myComponent extends React.Component{
                       >
                         <i className={["iconfont icon-close",styles.close].join(' ')}/>
                       </Popconfirm>
-
                         <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
                       </div>
                       <span

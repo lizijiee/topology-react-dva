@@ -10,11 +10,15 @@
       width: .5rem;
       height: .5rem;
       padding: 0;
+      :global(.ant-upload-list-item-uploading-text){
+        font-size: 12px;
+      }
       :global(.ant-upload-list-item-info::before){
         left: 0;
       }
       :global(.ant-upload-list-item-actions){
         >a{
+          // 不显示预览按钮
           display: none;
         }
       }
