@@ -545,10 +545,10 @@ class Index extends React.Component {
                 })
               }
             </TabPane>
-            <TabPane tab="我的组件" key="3" className={styles.tabsStyle} style={{ margin: 0 }}>
+            <TabPane tab="我的组件" key="1" className={styles.tabsStyle} style={{ margin: 0 }}>
               <MyComponent />
             </TabPane>
-            <TabPane tab="我的图片" key="1" style={{ color: "red" }}>
+            <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
               {/* <div>我的图片</div> */}
               <PicturesWall />
             </TabPane>

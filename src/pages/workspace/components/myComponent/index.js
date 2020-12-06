@@ -19,7 +19,8 @@ class myComponent extends React.Component{
     showPopover: false,         // 气泡卡片显示隐藏
     index: 0,                   // 列表输入框索引
     showInput: false,           // 输入框显示隐藏
-    isModalVisible: false       // 编辑组件显示隐藏
+    isModalVisible: false,      // 编辑组件显示隐藏
+    record:''                   // 创建组件modal中数据
   };
   componentDidMount() {
   }
@@ -128,15 +129,20 @@ class myComponent extends React.Component{
     console.log(e);
     message.error('取消删除当前组件');
   }
-  showEditComponnetModal = () => {
+  showEditComponentModal = (record) => {
     this.setState({
       isModalVisible: true,
+      record
     });
   }
-  closeEditComponnetModal = () => {
+  closeEditComponentModal = () => {
     this.setState({
       isModalVisible: false,
     });
+  }
+  createComponent(){
+    console.log(this.state.record);
+    this.setState({isModalVisible:false})
   }
   render() {
       const { visible, confirmLoading, ModalText, items } = this.state;
@@ -165,22 +171,22 @@ class myComponent extends React.Component{
       <div className={styles.tools}>
         <FlipMove>
             {
-              items.map((e,i) => {
+              items.map((ele,index) => {
                 return (
-                  <div key={e.id}>
+                  <div key={ele.id}>
                     <div className={styles.group}>
                       <i className="iconfont icon-cube"></i>
                       {/* <span className={styles.full}>{e.name}</span> */}
                       <ChangeInput
-                        value={e.name}            //传入内容
-                        id={e.id}                 // 设置id键值
-                        record={e}
+                        value={ele.name}            //传入内容
+                        id={ele.id}                 // 设置id键值
+                        record={ele}
                         {...changeInputProps}
                       />
                       <SettingPopover
                         moveDown={this.moveDown}
-                        i={i}
-                        record={e}
+                        i={index}
+                        record={ele}
                         items={items}
                         hidePopover={this.hidePopover}
                         showPopover={this.showPopover}
@@ -205,7 +211,7 @@ class myComponent extends React.Component{
                         title="我来添加组件"
                         draggable="true"
                         className={styles.add}
-                        onClick={this.showEditComponnetModal}
+                        onClick={()=>{this.showEditComponentModal(ele)}}
                       >
                         <i className="iconfont icon-add"></i>
                       </span>
@@ -216,12 +222,12 @@ class myComponent extends React.Component{
                         cancelText="取消"
                         visible={this.state.isModalVisible}
                         // onOk={handleOk}
-                        onCancel={this.closeEditComponnetModal}
+                        onCancel={this.closeEditComponentModal}
                         footer={null}
                       >
                        {/* <PicturesWall /> */}
                         <p onClick={()=>{this.setState({isModalVisible:false})}}>上传组件图片</p>
-                        <p onClick={()=>{this.setState({isModalVisible:false})}}>绘制组件</p>
+                        <p onClick={()=>{this.createComponent()}}>绘制组件</p>
                       </Modal>
                     </div>
                   </div>
