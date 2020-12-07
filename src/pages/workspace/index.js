@@ -118,7 +118,7 @@ class Index extends React.Component {
       nodes: null,
       locked: false
     },
-    contextmenu: {
+    contextmenu: {          // 右键菜单栏
       position: 'fixed',
       zIndex: '10',
       display: 'none',
@@ -131,8 +131,7 @@ class Index extends React.Component {
   componentDidMount() {
     this.canvasRegister();
     canvasOptions.on = this.onMessage;
-    this.canvas = new Topology('topology-canvas', this.canvasOptions);
-    // console.log('this.canvas',this.canvas);
+    this.canvas = new Topology('topology-canvas', canvasOptions);
     document.onclick = event => {
       this.setState({
         contextmenu: {
@@ -189,9 +188,14 @@ class Index extends React.Component {
     registerNode('sequenceFocus', sequenceFocus, sequenceFocusAnchors, sequenceFocusIconRect, sequenceFocusTextRect);
   }
 
+  /**
+   * 监听画布上元素的事件
+   * @params {string} event - 事件名称
+   * @params {object} data - 节点数据
+   */
   onMessage = (event, data) => {
     switch (event) {
-      case 'node':
+      case 'node':  // 节点
       case 'addNode':
         this.setState({
           selected: {
@@ -203,7 +207,7 @@ class Index extends React.Component {
           }
         });
         break;
-      case 'line':
+      case 'line': // 连线
       case 'addLine':
         this.setState({
           selected: {
@@ -226,7 +230,7 @@ class Index extends React.Component {
           }
         });
         break;
-      case 'space':
+      case 'space':  // 空白处
         this.setState({
           selected: {
             node: null,
@@ -278,7 +282,6 @@ class Index extends React.Component {
         break;
     }
     // tslint:disable-next-line:no-console
-    // console.log('onMessage:', event, data);
   };
 
   onDrag(event, node) {
@@ -461,7 +464,8 @@ class Index extends React.Component {
   }
 
   handle_parse(data) {
-    this.canvas.parse();
+    // this.canvas.parse();
+    this.canvas.paste();
   }
 
   handle_curve(data) {
@@ -557,10 +561,9 @@ class Index extends React.Component {
         {/* 画布 */}
         <div id="topology-canvas" className={styles.full} onContextMenu={this.hanleContextMenu} />
         {/* 右侧菜单 */}
-        {/* <div className={styles.props}>
+        <div className={styles.props}>
           <CanvasProps data={this.state.selected} onValuesChange={this.handlePropsChange} />
         </div>
-        */}
         {/* 画布右键菜单 */}
         <div style={this.state.contextmenu} >
           <CanvasContextMenu data={this.state.selected} canvas={this.canvas} />

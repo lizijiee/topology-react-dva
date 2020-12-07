@@ -40,7 +40,6 @@ class CanvasProps extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-
     if (this.state.node) {
       return (
         <Form>
@@ -83,11 +82,11 @@ class CanvasProps extends React.Component {
       );
     } else if (this.state.line) {
       return (
-        <div className={styles.title}>line</div>
+        <div className={styles.title}>line属性设置</div>
       );
     } else if (this.state.multi) {
       return (
-        <div className={styles.title}>multi</div>
+        <div className={styles.title}>multi属性设置</div>
       );
     }
 

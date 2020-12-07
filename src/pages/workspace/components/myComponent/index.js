@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'dva';
+import router from 'umi/router';
 import { Popover, Button, Modal, Form, Input, Popconfirm, message } from 'antd';
 import styles from './index.less';
 import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
 import ChangeInput from './changeInput';
+
 class myComponent extends React.Component{
   state = {
     ModalText: 'Content of the modal',    //
@@ -141,7 +143,15 @@ class myComponent extends React.Component{
     });
   }
   createComponent(){
-    console.log(this.state.record);
+    console.log(this.state.record,router);
+    // router.push(`/workspace?c=true&class=${this.state.record.name}`);
+    router.push({
+      pathname: '/workspace',
+      query: {
+        c: true,
+        class:this.state.record.name
+      },
+    });
     this.setState({isModalVisible:false})
   }
   render() {
