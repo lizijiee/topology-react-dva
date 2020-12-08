@@ -4,8 +4,8 @@ import { FormComponentProps } from 'antd/es/form';
 
 import { Node } from 'topology-core/models/node';
 import { Line } from 'topology-core/models/line';
-
 import styles from './index.less';
+import NodeComponent from './component/nodeComponent';
 
 // export interface CanvasPropsProps {
 //   form: FormComponentProps['form'];
@@ -42,43 +42,8 @@ class CanvasProps extends React.Component {
     const { getFieldDecorator } = this.props.form;
     if (this.state.node) {
       return (
-        <Form>
-          <div className={styles.title}>位置和大小</div>
-          <div className={styles.items}>
-            <div className="flex grid">
-              <div>X（px）</div>
-              <div>Y（px）</div>
-            </div>
-            <div className="flex grid mt5">
-              <div className="mr5">
-                <Form.Item className={styles.formItem}>
-                  {getFieldDecorator('node.rect.x', { initialValue: this.state.node.rect.x })(<InputNumber />)}
-                </Form.Item>
-              </div>
-              <div>
-                <Form.Item className={styles.formItem}>
-                  {getFieldDecorator('node.rect.y', { initialValue: this.state.node.rect.y })(<InputNumber />)}
-                </Form.Item>
-              </div>
-            </div>
-            <div className="flex grid">
-              <div>宽（px）</div>
-              <div>高（px）</div>
-            </div>
-            <div className="flex grid mt5">
-              <div className="mr5">
-                <Form.Item className={styles.formItem}>
-                  {getFieldDecorator('node.rect.width', { initialValue: this.state.node.rect.width })(<InputNumber />)}
-                </Form.Item>
-              </div>
-              <div>
-                <Form.Item className={styles.formItem}>
-                  {getFieldDecorator('node.rect.height', { initialValue: this.state.node.rect.height })(<InputNumber />)}
-                </Form.Item>
-              </div>
-            </div>
-          </div>
-        </Form>
+        // data作为初始数据，onValuesChange作为表单域的值改变后回调修改节点
+        <NodeComponent  data={this.state} onValuesChange={this.props.onValuesChange}/>
       );
     } else if (this.state.line) {
       return (
@@ -131,6 +96,7 @@ class CanvasProps extends React.Component {
 
 export default Form.create({
   onValuesChange({ onValuesChange, ...restProps }, changedValues, allValues) {
+    console.log('onValuesChange:',changedValues)
     if (onValuesChange) {
       onValuesChange(restProps, changedValues, allValues);
     }

@@ -116,7 +116,7 @@ class Index extends React.Component {
       line: null,
       multi: false,
       nodes: null,
-      locked: false
+      locked: false,
     },
     contextmenu: {          // 右键菜单栏
       position: 'fixed',
@@ -291,7 +291,6 @@ class Index extends React.Component {
   handlePropsChange = (props, changedValues, allValues) => {
     if (changedValues.node) {
       // 遍历查找修改的属性，赋值给原始Node
-
       // this.state.selected.node = Object.assign(this.state.selected.node, changedValues.node);
       for (const key in changedValues.node) {
         if (Array.isArray(changedValues.node[key])) {
@@ -303,6 +302,7 @@ class Index extends React.Component {
           this.state.selected.node[key] = changedValues.node[key];
         }
       }
+      // console.log('selected.node:',this.state.selected.node)
       // 通知属性更新，刷新
       this.canvas.updateProps(this.state.selected.node);
     }
@@ -527,7 +527,7 @@ class Index extends React.Component {
         {/* 左侧菜单 */}
         <div className={styles.tools} >
           <Tabs defaultActiveKey="1" className={styles.tabs} >
-            <TabPane tab="系统组件" key="2" >
+            <TabPane tab="系统组件" key="1" >
               {
                 this.state.tools.map((item, index) => {
                   return (
@@ -549,7 +549,7 @@ class Index extends React.Component {
                 })
               }
             </TabPane>
-            <TabPane tab="我的组件" key="1" className={styles.tabsStyle} style={{ margin: 0 }}>
+            <TabPane tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
               <MyComponent />
             </TabPane>
             <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
