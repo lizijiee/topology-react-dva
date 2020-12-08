@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, InputNumber, Collapse, Input, Select, Tabs, Row, Col } from 'antd';
+import PicturesWall from '../../../picturesWall'
 import styles from './index.less';
-
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -13,6 +13,7 @@ class NodeComponent extends React.Component {
     node: this.props.data.node,
     line: this.props.data.line,
     multi: this.props.data.multi,
+    imageDlg:false
   };
   componentDidUpdate() {
     if (this.state.node !== this.props.data.node || this.state.line !== this.props.data.line || this.state.multi !== this.props.data.multi) {
@@ -25,7 +26,19 @@ class NodeComponent extends React.Component {
       });
     }
   }
-
+  // hideInput = () => {
+  //   this.setState({
+  //     showInput: false,
+  //     index: 0
+  //   });
+  // };
+  // showInput = (showInput,index) => {
+  //   if(showInput){
+  //     this.setState({ showInput,index:index });
+  //   }else{
+  //     this.setState({ showInput,index:0});
+  //   }
+  // };
   render() {
     const { getFieldDecorator } = this.props.form;
     console.log(this.state.node)
@@ -34,7 +47,8 @@ class NodeComponent extends React.Component {
       {/* <div className={styles.title}>位置和大小</div> */}
       <Tabs defaultActiveKey="1" className={styles.tabs}>
         <TabPane tab="外观" key="1" style={{ margin: 0 }}>
-          <Collapse defaultActiveKey={['1', '2', '3']}>
+          {/* <Collapse defaultActiveKey={['1', '2', '3','4']}> */}
+          <Collapse defaultActiveKey={['4']}>
             <Panel header="位置和大小" key="1">
               {
               /**
@@ -142,6 +156,27 @@ class NodeComponent extends React.Component {
                   </Col>
                 </Row>
               }
+            </Panel>
+            <Panel header="图片" key="4" className={styles.picture}>
+              <span className={styles.gray}>图片、字体图标同时存在时，图片优先</span>
+              <PicturesWall></PicturesWall>
+              {/* <Row>
+                <Col span={12}>
+                  <Form.Item label="图片选择" labelCol={{ span: 18 }} wrapperCol={{ span: 6 }}>
+                   {getFieldDecorator('node.image', {
+                      initialValue: this.state.node.image
+                    })(<span
+                      title="我来添加组件"
+                      draggable="true"
+                      className={styles.add}
+                      // onClick={()=>{this.showEditComponentModal(ele)}}
+                    >
+                      <i className="iconfont icon-add"></i>
+                    </span>)}
+
+                   </Form.Item>
+                </Col>
+              </Row> */}
             </Panel>
           </Collapse>
         </TabPane>

@@ -14,3 +14,27 @@
    font-weight: 500;
   }
 }
+.picture{
+  :global(.ant-collapse-content-box){
+    padding-top: 0;
+  }
+  .gray{
+    color: #bfbfbf;
+    margin-bottom: 0.1rem;
+    font-size: 0.14rem;
+  }
+  .add{
+    width: .4rem;
+    height: .4rem;
+    display: inline-flex;
+    color: #bfbfbf;
+    border: 1px dashed #d9d9d9;
+    justify-content: center;
+    align-items: center;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+    &:hover{
+      border-style: solid;
+    }
+  }
+}

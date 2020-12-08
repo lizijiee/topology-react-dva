@@ -143,7 +143,6 @@ class myComponent extends React.Component{
     });
   }
   createComponent(){
-    console.log(this.state.record,router);
     // router.push(`/workspace?c=true&class=${this.state.record.name}`);
     router.push({
       pathname: '/workspace',

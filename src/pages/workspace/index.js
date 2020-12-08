@@ -225,7 +225,8 @@ class Index extends React.Component {
             node: null,
             line: null,
             multi: true,
-            nodes: data.nodes.length > 1 ? data.nodes : null,
+            // nodes: data.nodes.length > 1 ? data.nodes : null,
+            nodes: data.length > 1 ? data.nodes : null,
             locked: this.getLocked(data)
           }
         });
@@ -553,7 +554,6 @@ class Index extends React.Component {
               <MyComponent />
             </TabPane>
             <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
-              {/* <div>我的图片</div> */}
               <PicturesWall />
             </TabPane>
           </Tabs>
