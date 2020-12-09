@@ -13,7 +13,6 @@ class NodeComponent extends React.Component {
     node: this.props.data.node,
     line: this.props.data.line,
     multi: this.props.data.multi,
-    imageDlg:false
   };
   componentDidUpdate() {
     if (this.state.node !== this.props.data.node || this.state.line !== this.props.data.line || this.state.multi !== this.props.data.multi) {
@@ -26,29 +25,24 @@ class NodeComponent extends React.Component {
       });
     }
   }
-  // hideInput = () => {
-  //   this.setState({
-  //     showInput: false,
-  //     index: 0
-  //   });
-  // };
-  // showInput = (showInput,index) => {
-  //   if(showInput){
-  //     this.setState({ showInput,index:index });
-  //   }else{
-  //     this.setState({ showInput,index:0});
-  //   }
-  // };
+  onChangeImgUrl=(file)=>{
+    if (this.props.onValuesChange) {
+      this.props.onValuesChange(null, {node:{image:file.url}}, null);
+    }
+  }
+  removeImgUrl=()=>{
+    if (this.props.onValuesChange) {
+      this.props.onValuesChange(null, {node:{image:''}}, null);
+    }
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
-    console.log(this.state.node)
     return (
     <Form>
       {/* <div className={styles.title}>位置和大小</div> */}
       <Tabs defaultActiveKey="1" className={styles.tabs}>
         <TabPane tab="外观" key="1" style={{ margin: 0 }}>
-          {/* <Collapse defaultActiveKey={['1', '2', '3','4']}> */}
-          <Collapse defaultActiveKey={['4']}>
+          <Collapse defaultActiveKey={['1', '2', '3','4']}>
             <Panel header="位置和大小" key="1">
               {
               /**
@@ -159,7 +153,8 @@ class NodeComponent extends React.Component {
             </Panel>
             <Panel header="图片" key="4" className={styles.picture}>
               <span className={styles.gray}>图片、字体图标同时存在时，图片优先</span>
-              <PicturesWall></PicturesWall>
+              <a href="#" style={{display:'block'}} onClick={this.removeImgUrl}>取消</a>
+              <PicturesWall onChangeImgUrl={this.onChangeImgUrl}></PicturesWall>
               {/* <Row>
                 <Col span={12}>
                   <Form.Item label="图片选择" labelCol={{ span: 18 }} wrapperCol={{ span: 6 }}>
@@ -194,6 +189,7 @@ export default Form.create({
   // props, changedValues, allValues
   onValuesChange({ onValuesChange, ...restProps }, changedValues, allValues) {
     if (onValuesChange) {
+      console.log(restProps,changedValues,allValues)
       onValuesChange(restProps, changedValues, allValues);
     }
   }
