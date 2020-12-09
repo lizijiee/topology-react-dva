@@ -1,11 +1,11 @@
 import React from 'react';
-import { Form, InputNumber } from 'antd';
+import { Form, Input, Select, Row, Col } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
-
 import { Node } from 'topology-core/models/node';
 import { Line } from 'topology-core/models/line';
 import styles from './index.less';
 import NodeComponent from './component/nodeComponent';
+const { Option } = Select;
 
 // export interface CanvasPropsProps {
 //   form: FormComponentProps['form'];
@@ -40,6 +40,7 @@ class CanvasProps extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log(this.state)
     if (this.state.node) {
       return (
         // data作为初始数据，onValuesChange作为表单域的值改变后回调修改节点
@@ -57,8 +58,33 @@ class CanvasProps extends React.Component {
 
     return (
       <div>
-        <div className={styles.title}>欢迎使用le5le-topology！</div>
-        <div className={styles.group}>
+        <div className={styles.title}>项目设置</div>
+        {
+          /**
+          * 渲染项目设置表单
+          */
+          <Row>
+            <Col>
+              <Form.Item className={styles.formItem} label="图文名称：" labelCol={{ span: 8 }} wrapperCol={{ span: 15 }}>
+                  {getFieldDecorator('node.rect.x', { initialValue: this.state.node?this.state.node.name:'空白文件'})(<Input />)}
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item label="图文类别：" labelCol={{ span: 8 }} wrapperCol={{ span: 15 }}>
+                {getFieldDecorator('node.class', {
+                  initialValue: this.state.node?this.state.node.class:'组件类别一'
+                })(
+                  <Select style={{ width: '95%' }}>
+                    <Option value={0}>组件类别一</Option>
+                    <Option value={1}>组件类别二</Option>
+                    <Option value={2}>组件类别三</Option>
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+        }
+        {/* <div className={styles.group}>
           <a className={styles.star} href="https://github.com/le5le-com/topology"
             target="_blank"
           >
@@ -76,7 +102,7 @@ class CanvasProps extends React.Component {
           <li>React demo</li>
           <li>Vue3 demo</li>
           <li>系列教程</li>
-        </ul>
+        </ul> */}
         <div className={styles.bottom} >
           <div className={styles.title}>
             小提示
