@@ -73,6 +73,7 @@ class PicturesWall extends React.Component {
   handleChange = ({ fileList }) => this.setState({ fileList });
 
   render() {
+    console.log('PicturesWallPicturesWall')
     const { previewVisible, previewImage, fileList, previewTitle } = this.state;
     const uploadButton = (
       <div>

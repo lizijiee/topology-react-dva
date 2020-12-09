@@ -303,7 +303,7 @@ class Index extends React.Component {
           this.state.selected.node[key] = changedValues.node[key];
         }
       }
-      // console.log('selected.node:',this.state.selected.node)
+      // console.log('selected.node:', this.state.selected.node.image)
       // 通知属性更新，刷新
       this.canvas.updateProps(this.state.selected.node);
     }
@@ -573,4 +573,4 @@ class Index extends React.Component {
   }
 }
 
-export default connect((state) => ({ event: state.event}))(Index);
+export default connect((state) => ({ event: state.event }))(Index);
