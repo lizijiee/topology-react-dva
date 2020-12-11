@@ -3,7 +3,7 @@ import styles from './index.less';
 import Headers from './headers';
 
 class BasicLayout extends React.Component {
-  
+
   render(){
     return (
     <div className={styles.page}>

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 
 import styles from './index.less';
 import { Tools } from '@/utils/tools';
-import { get } from '@/services/topology';
+import { get,save } from '@/services/topology';
 
 import * as FileSaver from 'file-saver';
 
@@ -94,6 +94,7 @@ import { IEvent } from '@/models/event';
 import CanvasContextMenu from './components/canvasContextMenu';
 import MyComponent from './components/myComponent';
 import PicturesWall from './components/picturesWall';
+// import { NoticeService } from 'le5le-components/notice';
 
 import { Tabs } from 'antd';
 import myAnchorFn from './myAnchorFn.js'
@@ -312,6 +313,7 @@ class Index extends React.Component {
   componentDidUpdate() {
     if (this.props.event !== this.state.event) {
       this.setState({ event: this.props.event });
+      // onMenuClick 方法
       if (this['handle_' + this.props.event.event]) {
         this['handle_' + this.props.event.event](this.props.event.data);
       }
@@ -322,7 +324,10 @@ class Index extends React.Component {
       this.getTopo(this.props.location.query.id);
     }
   }
-
+  /**
+   * 查询组件详情
+   * @params {string} id - 组件id
+   */
   async getTopo(id) {
     if (!id) {
       this.handle_new(null);
@@ -401,6 +406,21 @@ class Index extends React.Component {
   }
 
   handle_save(data) {
+    if (!this.canvas) {
+      return;
+    }
+    this.setState({
+      data: this.canvas.data
+    });
+    // this.data.data = this.canvas.data;
+    console.log('this.canvas',this.canvas.toImage);
+    this.canvas.toImage('image/png', 1, async (blob) => {
+      // const ret =await save(this.canvas.data)
+      console.log(blob);
+    });
+  }
+  handle_saveAs(data) {
+    // this.data.id = '';
     FileSaver.saveAs(
       new Blob([JSON.stringify(this.canvas.data)], { type: 'text/plain;charset=utf-8' }),
       `le5le.topology.json`

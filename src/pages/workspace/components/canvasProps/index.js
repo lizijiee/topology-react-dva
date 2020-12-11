@@ -40,7 +40,6 @@ class CanvasProps extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    console.log(this.state)
     if (this.state.node) {
       return (
         // data作为初始数据，onValuesChange作为表单域的值改变后回调修改节点

@@ -108,6 +108,7 @@ class Headers extends React.Component{
         break;
       default:
         if (key && this.props.dispatch) {
+          console.log('key',key)
           this.props.dispatch({
             type: 'event/emit',
             payload: {
@@ -149,7 +150,8 @@ class Headers extends React.Component{
             <Menu.Item key="open" className={styles.subTtem}>打开本地文件（新建）</Menu.Item>
             <Menu.Item key="replace" className={styles.subTtem}>打开本地文件</Menu.Item>
             <Menu.Divider>{}</Menu.Divider>
-            <Menu.Item key="save" className={styles.subTtem}>保存到本地</Menu.Item>
+            <Menu.Item key="save" className={styles.subTtem}>保存</Menu.Item>
+            <Menu.Item key="saveAs" className={styles.subTtem}>保存到本地</Menu.Item>
             <Menu.Item key="savePng" className={styles.subTtem}>下载为PNG</Menu.Item>
             <Menu.Item key="saveSvg" className={styles.subTtem}>下载为SVG</Menu.Item>
           </SubMenu>
