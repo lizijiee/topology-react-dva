@@ -65,18 +65,18 @@ class CanvasProps extends React.Component {
           <Row>
             <Col>
               <Form.Item className={styles.formItem} label="图文名称：" labelCol={{ span: 8 }} wrapperCol={{ span: 15 }}>
-                  {getFieldDecorator('node.rect.x', { initialValue: this.state.node?this.state.node.name:'空白文件'})(<Input />)}
+                  {getFieldDecorator('state.name', { initialValue: this.state.node?this.state.node.name:'空白文件'})(<Input />)}
               </Form.Item>
             </Col>
             <Col>
               <Form.Item label="图文类别：" labelCol={{ span: 8 }} wrapperCol={{ span: 15 }}>
-                {getFieldDecorator('node.class', {
+                {getFieldDecorator('state.class', {
                   initialValue: this.state.node?this.state.node.class:'组件类别一'
                 })(
                   <Select style={{ width: '95%' }}>
-                    <Option value={0}>组件类别一</Option>
-                    <Option value={1}>组件类别二</Option>
-                    <Option value={2}>组件类别三</Option>
+                    <Option value={'组件类别一'}>组件类别一</Option>
+                    <Option value={'组件类别二'}>组件类别二</Option>
+                    <Option value={'组件类别三'}>组件类别三</Option>
                   </Select>
                 )}
               </Form.Item>

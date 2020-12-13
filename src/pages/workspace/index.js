@@ -320,6 +320,12 @@ class Index extends React.Component {
       // 通知属性更新，刷新
       this.canvas.updateProps(this.state.selected.node);
     }
+    if(changedValues.state){
+      for (const key in changedValues.state) {
+        this.state[key] = changedValues[key]
+        console.log(this.state, changedValues)
+      }
+    }
   }
 
   componentDidUpdate() {
@@ -476,12 +482,14 @@ class Index extends React.Component {
     this.setState({
       data: this.canvas.data
     });
-    // this.data.data = this.canvas.data;
-    console.log('this.canvas.data',this.canvas.data);
+
     this.canvas.toImage('image/png', 1, async (blob) => {
       // const ret =await save(this.canvas.data)
-      console.log(blob);
+      console.log(this.state,blob);
     });
+    if (this.state.component) {
+      this.state.componentData = this.canvas.toComponent();
+    }
   }
   handle_saveAs(data) {
     // this.data.id = '';
