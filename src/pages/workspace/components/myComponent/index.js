@@ -151,6 +151,7 @@ class myComponent extends React.Component{
         class:this.state.record.name
       },
     });
+    this.props.dispatch({type:'class/saveClassInfo',payload:{class:this.state.record.name}})
     this.setState({isModalVisible:false})
   }
   render() {
@@ -284,5 +285,4 @@ class myComponent extends React.Component{
 
 const WrappedmyComponent = Form.create({ name: 'dynamic_rule' })(myComponent);
 
-// export default connect((state) => ({event: state.event}))(myComponent);
-export default connect((state) => ({}))(WrappedmyComponent);
+export default connect((state) => ({class: state.class}))(WrappedmyComponent);

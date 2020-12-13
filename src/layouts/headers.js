@@ -32,35 +32,6 @@ class Headers extends React.Component{
       });
     }
   }
-  onHandleImportJson = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = event => {
-      const elem = event.srcElement || event.target;
-      if (elem.files && elem.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          const text = e.target.result + '';
-          try {
-            const data = JSON.parse(text);
-            console.log(this.props.canvas)
-            const canvasOptions={
-              rotateCursor: '/img/rotate.cur'
-            };
-            console.log(this.props);
-            this.props.canvas.open(data);
-          } catch (e) {
-            return false;
-          } finally {
-
-          }
-        };
-        reader.readAsText(elem.files[0]);
-      }
-    };
-    input.click();
-  }
-
   onMenuClick = (event) => {
     const { key } = event;
 
@@ -75,10 +46,19 @@ class Headers extends React.Component{
 
     switch (key) {
       case 'new':
-        router.push('/workspace')
+        router.push('/workspace');
+        setTimeout(() => {
+          this.props.dispatch({
+            type: 'event/emit',
+            payload: {
+              event: key
+            }
+          });
+        }, 100)
         break
       case 'open':
-        router.push('/workspace')
+        // dva将key传入wordspace.js
+        router.push('/workspace');
         setTimeout(() => {
           this.props.dispatch({
             type: 'event/emit',
@@ -148,7 +128,7 @@ class Headers extends React.Component{
           <SubMenu title="文件" className={styles.item}>
             <Menu.Item key="new" className={styles.subTtem}>新建文件</Menu.Item>
             <Menu.Item key="open" className={styles.subTtem}>打开本地文件（新建）</Menu.Item>
-            <Menu.Item key="replace" className={styles.subTtem}>打开本地文件</Menu.Item>
+            {/* <Menu.Item key="replace" className={styles.subTtem}>打开本地文件</Menu.Item> */}
             <Menu.Divider>{}</Menu.Divider>
             <Menu.Item key="save" className={styles.subTtem}>保存</Menu.Item>
             <Menu.Item key="saveAs" className={styles.subTtem}>保存到本地</Menu.Item>

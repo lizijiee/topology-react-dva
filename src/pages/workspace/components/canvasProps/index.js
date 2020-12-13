@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'dva';
 import { Form, Input, Select, Row, Col } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { Node } from 'topology-core/models/node';
@@ -37,7 +38,6 @@ class CanvasProps extends React.Component {
       });
     }
   }
-
   render() {
     const { getFieldDecorator } = this.props.form;
     if (this.state.node) {
@@ -83,25 +83,6 @@ class CanvasProps extends React.Component {
             </Col>
           </Row>
         }
-        {/* <div className={styles.group}>
-          <a className={styles.star} href="https://github.com/le5le-com/topology"
-            target="_blank"
-          >
-            喜欢，点击这里打个star吧
-          </a>
-          <a href="https://www.yuque.com/alsmile/topology" target="_blank">使用教程</a><br />
-          <a href="http://topology.le5le.com/assets/img/topology_wechat.jpg?t=1" target="_blank">微信交流群（大群）</a
-          ><br />
-          <a href="http://topology.le5le.com/assets/img/topology_wechat2.jpg" target="_blank">微信交流群2</a><br />
-          <a href="https://www.yuque.com/alsmile/topology/faq#EVbCgt" target="_blank">联系我们</a>
-        </div>
-        <div className={styles.title}>[Todo] 未来规划</div>
-        <ul className={styles.group}>
-          <li>Github issues</li>
-          <li>React demo</li>
-          <li>Vue3 demo</li>
-          <li>系列教程</li>
-        </ul> */}
         <div className={styles.bottom} >
           <div className={styles.title}>
             小提示
@@ -119,7 +100,7 @@ class CanvasProps extends React.Component {
   }
 }
 
-export default Form.create({
+const WrappedCanvasProps= Form.create({
   onValuesChange({ onValuesChange, ...restProps }, changedValues, allValues) {
     console.log('onValuesChange:',changedValues)
     if (onValuesChange) {
@@ -127,3 +108,5 @@ export default Form.create({
     }
   }
 })(CanvasProps);
+
+export default connect((state) => ({class: state.class}))(WrappedCanvasProps);

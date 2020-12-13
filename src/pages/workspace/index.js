@@ -110,6 +110,16 @@ class Index extends React.Component {
     id: '',
     data: null,
     event: this.props.event,
+
+    version: '',
+    name: '空白文件',
+    desc: '',
+    image: '',
+    userId: '',
+    class: '',
+    component: false,
+    shared: false,
+    
     tools: Tools,
     iconfont: { fontSize: '.24rem' },
     selected: {
@@ -301,6 +311,7 @@ class Index extends React.Component {
             this.state.selected.node[key][k] = changedValues.node[key][k];
           }
         } else {
+          console.log('this.state.selected',this.state.selected,'changedValues:',changedValues.node[key])
           this.state.selected.node[key] = changedValues.node[key];
         }
       }
@@ -331,6 +342,17 @@ class Index extends React.Component {
   async getTopo(id) {
     if (!id) {
       this.handle_new(null);
+      // this.data = {
+      //   id: '',
+      //   version: '',
+      //   name: '空白文件',
+      //   desc: '',
+      //   image: '',
+      //   userId: '',
+      //   class: '',
+      //   component: params.get('c') || false,
+      //   shared: false,
+      // };
       return;
     }
     const data = await get(id);
@@ -373,11 +395,64 @@ class Index extends React.Component {
   }
 
   handle_new(data) {
-    this.canvas.open({ nodes: [], lines: [] });
+    this.canvas.open(data);
+    /*
+      onNew() {
+        this.data = {
+          id: '',
+          version: '',
+          name: '空白文件',
+          desc: '',
+          image: '',
+          userId: '',
+          class: '',
+          component: false,
+          shared: false,
+        };
+        Store.set('file', this.data);
+        this.canvas.open(this.data.data);
+        this.router.navigateByUrl('/workspace');
+      }
+    */
+
   }
 
   handle_open(data) {
+    console.log(data)
     this.handle_replace(data);
+    /*
+         const name = file.name.replace('.json', '');
+    this.data.name = name;
+    Store.set('file', this.data);
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const text = e.target.result + '';
+      try {
+        const data = JSON.parse(text);
+        if (data && data.lineName) {
+          Store.set('lineName', data.lineName);
+          Store.set('fromArrow', data.fromArrow);
+          Store.set('toArrow', data.toArrow);
+          this.data = {
+            id: '',
+            version: '',
+            data,
+            name: name,
+            desc: '',
+            image: '',
+            userId: '',
+            class: '',
+            component: false,
+            shared: false,
+          };
+          this.canvas.open(data);
+        }
+      } catch (e) {
+        return false;
+      }
+    };
+    reader.readAsText(file);
+    */
   }
 
   handle_replace(data) {
@@ -392,11 +467,16 @@ class Index extends React.Component {
           const text = e.target.result + '';
           try {
             const data = JSON.parse(text);
+            const canvasOptions={
+              rotateCursor: '/img/rotate.cur'
+            };
             // if (data && Array.isArray(data.nodes) && Array.isArray(data.lines)) {
             this.canvas.open(data);
             // }
           } catch (e) {
             return false;
+          } finally {
+
           }
         };
         reader.readAsText(elem.files[0]);
@@ -413,7 +493,7 @@ class Index extends React.Component {
       data: this.canvas.data
     });
     // this.data.data = this.canvas.data;
-    console.log('this.canvas',this.canvas.toImage);
+    console.log('this.canvas.data',this.canvas.data);
     this.canvas.toImage('image/png', 1, async (blob) => {
       // const ret =await save(this.canvas.data)
       console.log(blob);
@@ -571,7 +651,7 @@ class Index extends React.Component {
               }
             </TabPane>
             <TabPane tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
-              <MyComponent />
+              <MyComponent data={this.state.selected}/>
             </TabPane>
             <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
               <PicturesWall />
