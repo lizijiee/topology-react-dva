@@ -106,40 +106,41 @@ const canvasOptions = {
   rotateCursor: '/img/rotate.cur'
 };
 class Index extends React.Component {
+  constructor(props){
+    super(props);
+      this.state = {
+        id: '',
+        data: null,
+        event: this.props.event,
+        // 待定
+        version: '',
+        name: '空白文件',
+        desc: '',
+        image: '',
+        userId: '',
+        class: '',
+        component: false,
+        shared: false,
 
-  state = {
-    id: '',
-    data: null,
-    event: this.props.event,
-    // 待定
-    version: '',
-    name: '空白文件',
-    desc: '',
-    image: '',
-    userId: '',
-    class: '',
-    component: false,
-    shared: false,
-
-    tools: Tools,
-    iconfont: { fontSize: '.24rem' },
-    selected: {
-      node: null,
-      line: null,
-      multi: false,
-      nodes: null,
-      locked: false,
-    },
-    contextmenu: {          // 右键菜单栏
-      position: 'fixed',
-      zIndex: '10',
-      display: 'none',
-      left: '',
-      top: '',
-      bottom: ''
-    }
-  };
-
+        tools: Tools,
+        iconfont: { fontSize: '.24rem' },
+        selected: {
+          node: null,
+          line: null,
+          multi: false,
+          nodes: null,
+          locked: false,
+        },
+        contextmenu: {          // 右键菜单栏
+          position: 'fixed',
+          zIndex: '10',
+          display: 'none',
+          left: '',
+          top: '',
+          bottom: ''
+        }
+      };
+}
   componentDidMount() {
     this.canvasRegister();
     canvasOptions.on = this.onMessage;
@@ -316,19 +317,18 @@ class Index extends React.Component {
           this.state.selected.node[key] = changedValues.node[key];
         }
       }
-      // console.log('selected.node:', this.state.selected.node.image)
       // 通知属性更新，刷新
       this.canvas.updateProps(this.state.selected.node);
     }
     if(changedValues.state){
       for (const key in changedValues.state) {
-        this.state[key] = changedValues[key]
-        console.log(this.state, changedValues)
+        this.state[key] = changedValues.state[key]
       }
     }
   }
 
   componentDidUpdate() {
+    // 判断不准确容易死循环。Maximum update depth exceeded
     if (this.props.event !== this.state.event) {
       this.setState({ event: this.props.event });
       // onMenuClick 方法
@@ -336,8 +336,7 @@ class Index extends React.Component {
         this['handle_' + this.props.event.event](this.props.event.data);
       }
     }
-
-    if (this.props.location.query.id !== this.state.id) {
+    if (this.props.location.query.id&&this.props.location.query.id !== this.state.id) {
       this.setState({ id: this.props.location.query.id });
       this.getTopo(this.props.location.query.id);
     }
@@ -479,13 +478,13 @@ class Index extends React.Component {
     if (!this.canvas) {
       return;
     }
+    console.log(this.state);
     this.setState({
       data: this.canvas.data
     });
 
     this.canvas.toImage('image/png', 1, async (blob) => {
       // const ret =await save(this.canvas.data)
-      console.log(this.state,blob);
     });
     if (this.state.component) {
       this.state.componentData = this.canvas.toComponent();
@@ -612,9 +611,34 @@ class Index extends React.Component {
 
     return locked
   }
-
+  onEditTool=(className)=>{
+    if (this.state.id) {
+      router.push(`/workspace?id=${this.state.id}`);
+      return;
+    }
+    // router.push(`/workspace?c=true&class=${this.state.record.name}`);
+    router.push({
+      pathname: '/workspace',
+      query: {
+        c: true,
+        class:className
+      },
+    });
+    this.state.selected.class=className;
+    this.setState((preState)=> ({
+      id: '',
+      version: '',
+      name: '新组件',
+      desc: '',
+      image: '',
+      userId: '',
+      class: className,
+      component: true,
+      shared: false,
+    }));
+    this.canvas.open(this.state.data);
+  }
   render() {
-
     return (
       <div className={styles.page}>
         {/* 左侧菜单 */}
@@ -643,7 +667,7 @@ class Index extends React.Component {
               }
             </TabPane>
             <TabPane tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
-              <MyComponent data={this.state.selected}/>
+              <MyComponent data={this.state.selected} onEditTool={(val)=>{this.onEditTool(val)}}/>
             </TabPane>
             <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
               <PicturesWall />
@@ -654,7 +678,7 @@ class Index extends React.Component {
         <div id="topology-canvas" className={styles.full} onContextMenu={this.hanleContextMenu} />
         {/* 右侧菜单 */}
         <div className={styles.props}>
-          <CanvasProps data={this.state.selected} onValuesChange={this.handlePropsChange} />
+          <CanvasProps data={this.state.selected} className={this.state.class} onValuesChange={this.handlePropsChange} />
         </div>
         {/* 画布右键菜单 */}
         <div style={this.state.contextmenu} >

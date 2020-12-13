@@ -8,25 +8,27 @@ import SettingPopover from './settingPopover';
 import ChangeInput from './changeInput';
 
 class myComponent extends React.Component{
-  state = {
-    ModalText: 'Content of the modal',    //
-    visible: false,
-    confirmLoading: false,
-    items:[
-        {id:1,name:'组件类别一'},
-        {id:2,name:'组件类别二'},
-        {id:3,name:'组件类别三'},
-    ],
-    show: 0,                    // 列表气泡卡片索引
-    showPopover: false,         // 气泡卡片显示隐藏
-    index: 0,                   // 列表输入框索引
-    showInput: false,           // 输入框显示隐藏
-    isModalVisible: false,      // 编辑组件显示隐藏
-    record:''                   // 创建组件modal中数据
-  };
+  constructor(props){
+    super(props);
+      this.state = {
+        ModalText: 'Content of the modal',    //
+        visible: false,
+        confirmLoading: false,
+        items:[
+            {id:1,name:'组件类别一'},
+            {id:2,name:'组件类别二'},
+            {id:3,name:'组件类别三'},
+        ],
+        show: 0,                    // 列表气泡卡片索引
+        showPopover: false,         // 气泡卡片显示隐藏
+        index: 0,                   // 列表输入框索引
+        showInput: false,           // 输入框显示隐藏
+        isModalVisible: false,      // 编辑组件显示隐藏
+        record:''                   // 缓存组件类型，ele为最后一项
+      };
+    }
   componentDidMount() {
   }
-
   showModal = () => {
     this.setState({
       visible: true,
@@ -74,6 +76,7 @@ class myComponent extends React.Component{
   // componentWillReceiveProps(nextProps){
   //   console.log('nextProps',nextProps)
   // }
+
   componentDidUpdate(prevProps) {
     // if (prevProps.yourModels !== this.props.yourModels) {
     //   this.setState({
@@ -143,19 +146,20 @@ class myComponent extends React.Component{
     });
   }
   createComponent(){
-    // router.push(`/workspace?c=true&class=${this.state.record.name}`);
-    router.push({
-      pathname: '/workspace',
-      query: {
-        c: true,
-        class:this.state.record.name
-      },
-    });
-    this.props.dispatch({type:'class/saveClassInfo',payload:{class:this.state.record.name}})
+    this.props.onEditTool(this.state.record.name);
+    // router.push({
+    //   pathname: '/workspace',
+    //   query: {
+    //     c: true,
+    //     class:this.state.record.name
+    //   },
+    // });
+    // this.props.dispatch({type:'class/saveClassInfo',payload:{class:this.state.record.name}})
+
     this.setState({isModalVisible:false})
   }
   render() {
-      const { visible, confirmLoading, ModalText, items } = this.state;
+      const { visible, confirmLoading, items } = this.state;
       const { getFieldDecorator } = this.props.form;
       const formItemLayout = {
         labelCol: { span: 4 },
@@ -179,7 +183,7 @@ class myComponent extends React.Component{
     return (
       <>
       <div className={styles.tools}>
-        <FlipMove>
+        {/* <FlipMove> */}
             {
               items.map((ele,index) => {
                 return (
@@ -244,7 +248,7 @@ class myComponent extends React.Component{
                 )
               })
             }
-        </FlipMove>
+        {/* </FlipMove> */}
       </div>
 
       <div className={styles.setting}>

@@ -54,7 +54,6 @@ class CanvasProps extends React.Component {
         <div className={styles.title}>multi属性设置</div>
       );
     }
-
     return (
       <div>
         <div className={styles.title}>项目设置</div>
@@ -71,7 +70,7 @@ class CanvasProps extends React.Component {
             <Col>
               <Form.Item label="图文类别：" labelCol={{ span: 8 }} wrapperCol={{ span: 15 }}>
                 {getFieldDecorator('state.class', {
-                  initialValue: this.state.node?this.state.node.class:'组件类别一'
+                  initialValue: !!this.props.className?this.props.className:'组件类别一'
                 })(
                   <Select style={{ width: '95%' }}>
                     <Option value={'组件类别一'}>组件类别一</Option>
@@ -109,4 +108,4 @@ const WrappedCanvasProps= Form.create({
   }
 })(CanvasProps);
 
-export default connect((state) => ({class: state.class}))(WrappedCanvasProps);
+export default connect((state) => ({}))(WrappedCanvasProps);
