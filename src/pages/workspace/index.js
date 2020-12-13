@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import router from 'umi/router';
 
 import styles from './index.less';
 import { Tools } from '@/utils/tools';
@@ -110,7 +111,7 @@ class Index extends React.Component {
     id: '',
     data: null,
     event: this.props.event,
-
+    // 待定
     version: '',
     name: '空白文件',
     desc: '',
@@ -119,7 +120,7 @@ class Index extends React.Component {
     class: '',
     component: false,
     shared: false,
-    
+
     tools: Tools,
     iconfont: { fontSize: '.24rem' },
     selected: {
@@ -154,7 +155,7 @@ class Index extends React.Component {
       });
     }
     this.setState({ id: this.props.location.query.id });
-    this.getTopo(this.props.location.query.id);
+    this.props.location.query.id&&this.getTopo(this.props.location.query.id);
   }
 
   canvasRegister() {
@@ -342,17 +343,6 @@ class Index extends React.Component {
   async getTopo(id) {
     if (!id) {
       this.handle_new(null);
-      // this.data = {
-      //   id: '',
-      //   version: '',
-      //   name: '空白文件',
-      //   desc: '',
-      //   image: '',
-      //   userId: '',
-      //   class: '',
-      //   component: params.get('c') || false,
-      //   shared: false,
-      // };
       return;
     }
     const data = await get(id);
@@ -395,31 +385,25 @@ class Index extends React.Component {
   }
 
   handle_new(data) {
+    this.setState({
+      id: '',
+      version: '',
+      name: '空白文件',
+      desc: '',
+      image: '',
+      userId: '',
+      class: '',
+      component: false,
+      shared: false,
+    });
+    // Store.set('file', this.data);
     this.canvas.open(data);
-    /*
-      onNew() {
-        this.data = {
-          id: '',
-          version: '',
-          name: '空白文件',
-          desc: '',
-          image: '',
-          userId: '',
-          class: '',
-          component: false,
-          shared: false,
-        };
-        Store.set('file', this.data);
-        this.canvas.open(this.data.data);
-        this.router.navigateByUrl('/workspace');
-      }
-    */
-
+    router.push('/workspace');
   }
 
   handle_open(data) {
-    console.log(data)
     this.handle_replace(data);
+    router.push('/workspace');
     /*
          const name = file.name.replace('.json', '');
     this.data.name = name;

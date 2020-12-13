@@ -46,7 +46,6 @@ class Headers extends React.Component{
 
     switch (key) {
       case 'new':
-        router.push('/workspace');
         setTimeout(() => {
           this.props.dispatch({
             type: 'event/emit',
@@ -58,7 +57,6 @@ class Headers extends React.Component{
         break
       case 'open':
         // dva将key传入wordspace.js
-        router.push('/workspace');
         setTimeout(() => {
           this.props.dispatch({
             type: 'event/emit',
