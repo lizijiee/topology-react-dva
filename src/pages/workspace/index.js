@@ -118,7 +118,7 @@ class Index extends React.Component {
         desc: '',
         image: '',
         userId: '',
-        class: '',
+        class: '组件类别一',
         component: false,
         shared: false,
 
@@ -155,8 +155,10 @@ class Index extends React.Component {
         }
       });
     }
-    this.setState({ id: this.props.location.query.id });
-    this.props.location.query.id&&this.getTopo(this.props.location.query.id);
+    if(this.props.location.query.id){
+      this.setState({ id: this.props.location.query.id });
+      this.getTopo(this.props.location.query.id);
+    }
   }
 
   canvasRegister() {
@@ -478,13 +480,20 @@ class Index extends React.Component {
     if (!this.canvas) {
       return;
     }
-    console.log(this.state);
     this.setState({
       data: this.canvas.data
     });
-
+    console.log(this.state);
     this.canvas.toImage('image/png', 1, async (blob) => {
       // const ret =await save(this.canvas.data)
+      /*
+          共计三步骤
+          1. 提交图片,若原来存在,先删除原有图片
+          2. 提交图片成功返回值
+              url: "/image/topology/thumb_57a4ad3348f4ef02.png"
+          3. 提交含图片url全部data数据
+              this.data.image = res.url
+      */
     });
     if (this.state.component) {
       this.state.componentData = this.canvas.toComponent();
@@ -624,7 +633,6 @@ class Index extends React.Component {
         class:className
       },
     });
-    this.state.selected.class=className;
     this.setState((preState)=> ({
       id: '',
       version: '',
@@ -639,6 +647,7 @@ class Index extends React.Component {
     this.canvas.open(this.state.data);
   }
   render() {
+    console.log(this.state);
     return (
       <div className={styles.page}>
         {/* 左侧菜单 */}
