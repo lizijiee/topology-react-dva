@@ -61,12 +61,15 @@ class Index extends React.Component {
         <div className="flex wrap">
           {this.state.data.list.map((item, index) => {
             return (
-              <div className={styles.topo} key={index} onClick={() => { this.open(item) }}>
+              <div className={styles.topo} key={index} >
                 <div className={styles.image}>
-                  <img src={item.image} />
+                  <img src={item.image} onClick={() => { this.open(item) }}/>
                 </div>
                 <div className="ph15 pv10">
-                  <div className={styles.title} title={item.name}>{item.name}</div>
+                  <div className={styles.title} title={item.name}>
+                    <span>{item.name}</span>
+                    <Button size={'small'}>删除</Button>
+                  </div>
                   <div className={styles.desc} title={item.desc}>{item.desc}</div>
                   <div className="flex mt5">
                     <div className="full flex middle">

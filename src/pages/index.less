@@ -48,7 +48,14 @@
     font-size: 0.16rem;
     line-height: 0.24rem;
     height: 0.24rem;
-    cursor: pointer;
+    // cursor: pointer;
+    overflow: hidden;
+    >span{
+      float: left;
+    }
+    :global(.ant-btn) {
+      float: right;
+    }
   }
 
   .desc {
