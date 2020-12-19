@@ -56,10 +56,7 @@ class Index extends React.Component {
       <div className={styles.page}>
         <div className={styles.nav}>
         {/* <label>热门图文</label> */}
-        <Button onClick={() => {
-          router.push('/workspace');
-          document.getElementById('menus_header').style.display='block'
-        }}>新建组态</Button>
+        <Button onClick={() => {router.push('/workspace')}}>新建组态</Button>
         </div>
         <div className="flex wrap">
           {this.state.data.list.map((item, index) => {
@@ -78,7 +75,7 @@ class Index extends React.Component {
                       </Avatar>
                       <span className="ml5">{item.username}</span>
                     </div>
-                    <div>
+                    {/* <div>
                       <span className="hover pointer mr15" title="赞">
                         <i className={item.stared ? 'iconfont icon-appreciatefill' : 'iconfont icon-appreciate'} />
                         <span className="ml5">{item.star || 0}</span>
@@ -87,7 +84,7 @@ class Index extends React.Component {
                         <i className={item.favorited ? 'iconfont icon-likefill' : 'iconfont icon-like'} />
                         <span className="ml5">{item.hot || 0}</span>
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

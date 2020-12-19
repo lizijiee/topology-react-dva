@@ -5,10 +5,10 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import { Cookie } from 'le5le-store';
 
-import styles from './headers.less';
-import About from './about';
-import License from './license';
-import Joinin from './joinin';
+import styles from './index.less';
+import About from '@/layouts/about';
+import License from '@/layouts/license';
+import Joinin from '@/layouts/joinin';
 
 const { SubMenu } = Menu;
 
@@ -30,10 +30,6 @@ class Headers extends React.Component{
       dispatch({
         type: 'user/fetch',
       });
-    }
-    console.log()
-    if(window.location.pathname==='/'){
-      // this.refs.menus_header.style.display='none'
     }
   }
   componentWillReceiveProps(nextProps){
@@ -118,7 +114,7 @@ class Headers extends React.Component{
     )}`
 
     return (
-      <div id ='menus_header' ref='menus_header'>
+      <div>
         <Menu
           className={styles.menus}
           selectedKeys={[]}
@@ -176,10 +172,7 @@ class Headers extends React.Component{
           </SubMenu>
           <div className={styles.full} />
           <Menu.Item className={styles.right}>
-            <div onClick={()=>{
-              router.push('/')
-              // this.refs.menus_header.style.display='none'
-              }}>返回首页</div>
+            <div onClick={()=>{router.push('/')}}>返回首页</div>
           </Menu.Item>
           <Menu.Item className={styles.right}>
             <div>视图：{scale}%</div>
