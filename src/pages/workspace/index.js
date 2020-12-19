@@ -647,13 +647,12 @@ class Index extends React.Component {
     this.canvas.open(this.state.data);
   }
   render() {
-    console.log(this.state);
     return (
       <div className={styles.page}>
         {/* 左侧菜单 */}
         <div className={styles.tools} >
           <Tabs defaultActiveKey="1" className={styles.tabs} >
-            <TabPane tab="系统组件" key="1" >
+            <TabPane tab="组件库" key="1" >
               {
                 this.state.tools.map((item, index) => {
                   return (
@@ -675,12 +674,12 @@ class Index extends React.Component {
                 })
               }
             </TabPane>
-            <TabPane tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
+            <TabPane tab="组件编辑" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
               <MyComponent data={this.state.selected} onEditTool={(val)=>{this.onEditTool(val)}}/>
             </TabPane>
-            <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
+            {/* <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
               <PicturesWall />
-            </TabPane>
+            </TabPane> */}
           </Tabs>
         </div>
         {/* 画布 */}

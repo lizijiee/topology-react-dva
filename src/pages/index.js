@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
 
-import { Avatar, Pagination } from 'antd';
+import { Avatar, Pagination,Button } from 'antd';
 
 import { list } from '../services/topology';
 import styles from './index.less';
@@ -55,7 +55,11 @@ class Index extends React.Component {
     return (
       <div className={styles.page}>
         <div className={styles.nav}>
-          <label>热门图文</label>
+        {/* <label>热门图文</label> */}
+        <Button onClick={() => {
+          router.push('/workspace');
+          document.getElementById('menus_header').style.display='block'
+        }}>新建组态</Button>
         </div>
         <div className="flex wrap">
           {this.state.data.list.map((item, index) => {

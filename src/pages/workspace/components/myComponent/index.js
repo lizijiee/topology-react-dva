@@ -6,6 +6,7 @@ import styles from './index.less';
 import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
 import ChangeInput from './changeInput';
+import {get, Upload} from './service';
 
 class myComponent extends React.Component{
   constructor(props){
@@ -158,6 +159,29 @@ class myComponent extends React.Component{
 
     this.setState({isModalVisible:false})
   }
+  onImageUpload=()=> {
+    this.setState({isModalVisible:false})
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple="multiple"
+    input.onchange = async event => {
+      const elem = event.target;
+      console.log(elem.files);
+      Upload(elem.files[0], elem.files[0].name);
+      // if (elem.files && elem.files[0]) {
+      //   const file = await this.service.Upload(elem.files[0], elem.files[0].name);
+      //   if (!file) {
+      //     return;
+      //   }
+      //   this.image = file.url;
+      //   const id = await this.service.AddImage(file.url);
+      //   this.images.unshift({ id, image: file.url });
+      //   this.imageChange.emit(this.image);
+      // }
+    };
+    input.click();
+  }
+
   render() {
       const { visible, confirmLoading, items } = this.state;
       const { getFieldDecorator } = this.props.form;
@@ -240,7 +264,7 @@ class myComponent extends React.Component{
                         footer={null}
                       >
                        {/* <PicturesWall /> */}
-                        <p onClick={()=>{this.setState({isModalVisible:false})}}>上传组件图片</p>
+                        <p onClick={()=>{this.onImageUpload()}}>上传组件图片</p>
                         <p onClick={()=>{this.createComponent()}}>绘制组件</p>
                       </Modal>
                     </div>

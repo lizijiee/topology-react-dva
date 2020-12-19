@@ -1,4 +1,4 @@
-import { Menu, Avatar } from 'antd';
+import { Menu, Avatar, Button } from 'antd';
 import { ClickParam } from 'antd/es/menu';
 import React from 'react';
 import { connect } from 'dva';
@@ -31,6 +31,13 @@ class Headers extends React.Component{
         type: 'user/fetch',
       });
     }
+    console.log()
+    if(window.location.pathname==='/'){
+      this.refs.menus_header.style.display='none'
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps)
   }
   onMenuClick = (event) => {
     const { key } = event;
@@ -111,7 +118,7 @@ class Headers extends React.Component{
     )}`
 
     return (
-      <div>
+      <div id ='menus_header' ref='menus_header'>
         <Menu
           className={styles.menus}
           selectedKeys={[]}
@@ -168,6 +175,12 @@ class Headers extends React.Component{
             <Menu.Item className={styles.subTtem} key="about">关于</Menu.Item>
           </SubMenu>
           <div className={styles.full} />
+          <Menu.Item className={styles.right}>
+            <div onClick={()=>{
+              router.push('/')
+              this.refs.menus_header.style.display='none'
+              }}>返回首页</div>
+          </Menu.Item>
           <Menu.Item className={styles.right}>
             <div>视图：{scale}%</div>
           </Menu.Item>
