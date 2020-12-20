@@ -663,7 +663,7 @@ class Index extends React.Component {
                           {
                             item.images.map((image, i) => {
                               return (
-                                <a key={image} href='/#' draggable={true} onDragStart={(ev) => this.onDrag(ev, image)}>
+                                <a key={image}  draggable={true} onDragStart={(ev) => this.onDrag(ev, image)}>
                                   <img
                                     // draggable="true"
                                     alt="组件图片名称"
@@ -689,7 +689,7 @@ class Index extends React.Component {
                           {
                             item.children.map((btn, i) => {
                               return (
-                                <a key={i} href='/#' title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
+                                <a key={i} title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
                                   <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
                                 </a>
                               )
