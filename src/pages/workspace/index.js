@@ -121,7 +121,6 @@ class Index extends React.Component {
         class: '组件类别一',
         component: false,
         shared: false,
-
         tools: Tools,
         iconfont: { fontSize: '.24rem' },
         selected: {
@@ -656,6 +655,32 @@ class Index extends React.Component {
             <Tabs defaultActiveKey="1" className={styles.tabs} >
               <TabPane tab="组件库" key="1" >
                 {
+                  this.props.type.typeList.map((item, index) => {
+                    return(
+                    <div key={item.id}>
+                      <div className={styles.title}>{item.name}</div>
+                      <div className={styles.buttons}>
+                          {
+                            item.images.map((image, i) => {
+                              return (
+                                <a key={image} href='/#' draggable={true} onDragStart={(ev) => this.onDrag(ev, image)}>
+                                  <img
+                                    // draggable="true"
+                                    alt="组件图片名称"
+                                    key={image}
+                                    title="新组件"
+                                    src={image}
+                                    />
+                                </a>
+                              )
+                            })
+                          }
+                        </div>
+                    </div>
+                    )
+                  })
+                }
+                {
                   this.state.tools.map((item, index) => {
                     return (
                       <div key={index}>
@@ -664,7 +689,7 @@ class Index extends React.Component {
                           {
                             item.children.map((btn, i) => {
                               return (
-                                <a key={i} title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
+                                <a key={i} href='/#' title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
                                   <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
                                 </a>
                               )
@@ -700,4 +725,4 @@ class Index extends React.Component {
   }
 }
 
-export default connect((state) => ({ event: state.event }))(Index);
+export default connect((state) => ({ event: state.event,type:state.type }))(Index);

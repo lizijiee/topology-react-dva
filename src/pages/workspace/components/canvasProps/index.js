@@ -50,9 +50,9 @@ class CanvasProps extends React.Component {
         <div className={styles.title}>line属性设置</div>
       );
     } else if (this.state.multi) {
-      return (
-        <div className={styles.title}>multi属性设置</div>
-      );
+      // return (
+      //   <div className={styles.title}>multi属性设置</div>
+      // );
     }
     return (
       <div>

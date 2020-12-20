@@ -151,11 +151,11 @@ class NodeComponent extends React.Component {
                 </Row>
               }
             </Panel>
-            <Panel header="图片" key="4" className={styles.picture}>
+            {/* <Panel header="图片" key="4" className={styles.picture}>
               <span className={styles.gray}>图片、字体图标同时存在时，图片优先</span>
               <a href="#" style={{display:'block'}} onClick={this.removeImgUrl}>取消</a>
               <PicturesWall onChangeImgUrl={this.onChangeImgUrl}></PicturesWall>
-              {/* <Row>
+              <Row>
                 <Col span={12}>
                   <Form.Item label="图片选择" labelCol={{ span: 18 }} wrapperCol={{ span: 6 }}>
                    {getFieldDecorator('node.image', {
@@ -171,8 +171,8 @@ class NodeComponent extends React.Component {
 
                    </Form.Item>
                 </Col>
-              </Row> */}
-            </Panel>
+              </Row>
+            </Panel> */}
           </Collapse>
         </TabPane>
         <TabPane tab="事件" key="2" style={{ margin: 0 }} className={styles.tabsStyle} >
