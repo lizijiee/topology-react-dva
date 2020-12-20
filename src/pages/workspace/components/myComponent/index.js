@@ -12,7 +12,7 @@ class myComponent extends React.Component{
   constructor(props){
     super(props);
       this.state = {
-        ModalText: 'Content of the modal',    //
+        ModalText: 'Content of the modal',
         visible: false,
         confirmLoading: false,
         items:[
@@ -36,7 +36,7 @@ class myComponent extends React.Component{
     });
   };
 
-  submitOk =async () => {
+  submitOk =async (values) => {
     // 提交数据
     this.setState({
       ModalText: 'The modal will be closed after two seconds',
@@ -48,6 +48,8 @@ class myComponent extends React.Component{
         visible: false,
         confirmLoading: false,
       });
+      let items=JSON.parse(JSON.stringify([...this.state.items,{id:this.state.items.length+1,name:values.type}]))
+      this.setState({items})
     }, 2000);
   };
   handleCancel = () => {
@@ -59,11 +61,11 @@ class myComponent extends React.Component{
   check = () => {
     this.props.form.validateFields((err,values) => {
       if (!err) {
-        this.submitOk();
-        console.info('success', values);// values= { username: "12312312" }
+        this.submitOk(values);
       }
     });
   };
+
   moveDown=(index) => {
     this.resort(index,1);
   }
@@ -207,9 +209,12 @@ class myComponent extends React.Component{
     return (
       <>
       <div className={styles.tools}>
-        {/* <FlipMove> */}
+        {
+          console.log(items)
+        }
+        <FlipMove>
             {
-              items.map((ele,index) => {
+              items&&items.map((ele,index) => {
                 return (
                   <div key={ele.id}>
                     <div className={styles.group}>
@@ -272,7 +277,7 @@ class myComponent extends React.Component{
                 )
               })
             }
-        {/* </FlipMove> */}
+        </FlipMove>
       </div>
 
       <div className={styles.setting}>
