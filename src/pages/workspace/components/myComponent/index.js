@@ -176,7 +176,6 @@ class myComponent extends React.Component{
       const elem = event.target;
       // Upload(elem.files[0], elem.files[0].name);
       this.getBase64(elem.files,type);
-
       // if (elem.files && elem.files[0]) {
       //   const file = await this.service.Upload(elem.files[0], elem.files[0].name);
       //   if (!file) {
@@ -219,12 +218,12 @@ class myComponent extends React.Component{
     }
     let typeList=this.state.items.map((ele)=>{
       if(ele.id===this.state.record.id){
-        ele.images=uploadList
+        ele.images=[...ele.images,...uploadList]
       }
       return ele
     })
     this.setState({items:typeList});
-    console.log(type,typeList); // 上传放到哪个分组下面呢。
+    console.log(this.state.items,typeList); // 上传放到哪个分组下面呢。
   }
   // getBase64(url, callback) {
   //   var Img = new Image(),
