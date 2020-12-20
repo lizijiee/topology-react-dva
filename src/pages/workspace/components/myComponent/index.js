@@ -15,11 +15,6 @@ class myComponent extends React.Component{
         ModalText: 'Content of the modal',
         visible: false,
         confirmLoading: false,
-        items:[
-            {id:1,name:'组件类别一',images:[]},
-            {id:2,name:'组件类别二',images:[]},
-            {id:3,name:'组件类别三',images:[]},
-        ],
         show: 0,                    // 列表气泡卡片索引
         showPopover: false,         // 气泡卡片显示隐藏
         index: 0,                   // 列表输入框索引
@@ -37,19 +32,24 @@ class myComponent extends React.Component{
   };
 
   submitOk =async (values) => {
-    // 提交数据
+    const { typeList } = this.props.type;
     this.setState({
       ModalText: 'The modal will be closed after two seconds',
       confirmLoading: true,
     });
-    // await 等待数据返回关闭弹框关闭Loading
     setTimeout(() => {
       this.setState({
         visible: false,
         confirmLoading: false,
       });
-      let items=JSON.parse(JSON.stringify([...this.state.items,{id:this.state.items.length+1,name:values.type}]))
-      this.setState({items})
+
+      let items=[...typeList,{ id: typeList.length+1, name:values.type, images:[] }];
+      this.props.dispatch({
+        type: 'type/update',
+        payload: {
+          typeList: items
+        }
+      });
     }, 2000);
   };
   handleCancel = () => {
@@ -70,15 +70,12 @@ class myComponent extends React.Component{
     this.resort(index,1);
   }
   resort(index,diff){
-    let items = this.state.items;
+    let items = this.props.type.typeList;
     let item = items[index];
     items.splice(index,1);
     items.splice(index + diff,0,item);
     this.setState({items});
   }
-  // componentWillReceiveProps(nextProps){
-  //   console.log('nextProps',nextProps)
-  // }
 
   componentDidUpdate(prevProps) {
     // if (prevProps.yourModels !== this.props.yourModels) {
@@ -101,13 +98,13 @@ class myComponent extends React.Component{
     }
   };
   handleOk = (value) => {
-    // if(ele.id===this.state.record.id){
-    //   ele.images=uploadList
-    // }
-    // return ele
-    console.log(this.state.items.map((e)=>e.id===value.id?{...e,name:value.name}:e))
-    this.setState((prevState)=>({items:prevState.items.map((e)=>e.id===value.id?{...e,name:value.name}:e)}))
-    console.log('编辑组件库完成',value); //{type: "4543543543"} 修改完成值
+    this.props.dispatch({
+      type: 'type/update',
+      payload: {
+        typeList: this.props.type.typeList.map(e=>e.id===value.id?{...e,name:value.name,images:e.images?e.images:[]}:e)
+      }
+    });
+    console.log('编辑组件库完成',value);
   }
   //点击展示输入框
   handleChangeClick = () => {
@@ -176,23 +173,6 @@ class myComponent extends React.Component{
       const elem = event.target;
       // Upload(elem.files[0], elem.files[0].name);
       this.getBase64(elem.files,type);
-      // if (elem.files && elem.files[0]) {
-      //   const file = await this.service.Upload(elem.files[0], elem.files[0].name);
-      //   if (!file) {
-      //     return;
-      //   }
-      //   this.image = file.url;
-      //   const id = await this.service.AddImage(file.url);
-      //   this.images.unshift({ id, image: file.url });
-      //   this.imageChange.emit(this.image);
-      // }
-
-      // this.getBase64(url, (data) => {
-      //   const _data = [...list];
-      //   _data.push(data);
-      //   setList(_data);
-      //   setVisible(false);
-      // });
     };
     input.click();
   }
@@ -216,14 +196,17 @@ class myComponent extends React.Component{
  　　 }
       uploadList.push(await readFileAsync(files[i]))
     }
-    let typeList=this.state.items.map((ele)=>{
+    let typeList=this.props.type.typeList.map((ele)=>{
       if(ele.id===this.state.record.id){
         ele.images=[...ele.images,...uploadList]
       }
       return ele
     })
-    this.setState({items:typeList});
-    console.log(this.state.items,typeList); // 上传放到哪个分组下面呢。
+    this.props.dispatch({
+      type: 'type/update',
+      payload: {typeList}
+    });
+    console.log(this.props.type.typeList,typeList); // 上传放到哪个分组下面呢。
   }
   // getBase64(url, callback) {
   //   var Img = new Image(),
@@ -259,6 +242,7 @@ class myComponent extends React.Component{
   render() {
       const { visible, confirmLoading, items } = this.state;
       const { getFieldDecorator } = this.props.form;
+      const { typeList } = this.props.type;
       const formItemLayout = {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
@@ -283,7 +267,7 @@ class myComponent extends React.Component{
       <div className={styles.tools}>
         <FlipMove>
             {
-              items&&items.map((ele,index) => {
+              typeList.map((ele,index) => {
                 return (
                   <div key={ele.id}>
                     <div className={styles.group}>
@@ -319,6 +303,7 @@ class myComponent extends React.Component{
                         </Popconfirm>
                           <img
                             // draggable="true"
+                            alt="图片"
                             title="新组件"
                             onDragStart={(ev) => this.onDrag(ev, ele)}
                             src={require("./image/thumb.png")}
