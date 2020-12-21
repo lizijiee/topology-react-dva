@@ -1,12 +1,10 @@
 import React from 'react';
+import { connect } from 'dva';
 import { Node } from 'topology-core/models/node';
 import { Form, Col, Collapse, Switch, Select } from 'antd';
-import { canvas } from '../../../index';
 
 const { Panel } = Collapse;
-const Page = ({ node, form: { getFieldDecorator } }) => {
-  // const node = canvasData.node;
-
+const Page = ( { node, form: { getFieldDecorator } }) => {
 
   const onHandleStyleSelectChange = (e) => {
     node.animateFrames = [];
@@ -117,7 +115,7 @@ const Page = ({ node, form: { getFieldDecorator } }) => {
   const onHandleSwitchChange = (e) => {
     if (e) {
       node.animateStart = Date.now();
-      canvas.animate();
+      // canvas.animate(); // workspace handlePropsChange方法控制
     } else {
       node.animateStart = 0;
     }
@@ -157,7 +155,8 @@ const Page = ({ node, form: { getFieldDecorator } }) => {
         <Col span={24}>
           <Form.Item label="播放">
             {getFieldDecorator('start', {
-              initialValue: void 0
+              initialValue: void 0,
+              valuePropName: 'checked'
             })(
               <Switch
                 checkedChildren="开"
@@ -182,4 +181,5 @@ const Page = ({ node, form: { getFieldDecorator } }) => {
   );
 };
 
-export default Page;
+// export default connect((state) => ({ event: state.event,type:state.type }))(Index);
+export default connect((state)=>({canvas:state.canvas}))(Page);

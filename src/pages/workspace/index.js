@@ -339,6 +339,9 @@ class Index extends React.Component {
         this.state[key] = changedValues.state[key]
       }
     }
+    if(changedValues.start){
+      this.canvas.animate()
+    }
     // changedValues.event0  EventComponent数据 0结尾
   }
 

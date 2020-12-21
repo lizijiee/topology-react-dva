@@ -198,7 +198,7 @@ export default Form.create({
   // props, changedValues, allValues
   onValuesChange({ onValuesChange, ...restProps }, changedValues, allValues) {
     if (onValuesChange) {
-      console.log(restProps,changedValues,allValues)
+      console.log('编辑表单数据：',changedValues,allValues)
       onValuesChange(restProps, changedValues, allValues);
     }
   }

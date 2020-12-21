@@ -1,17 +1,5 @@
 import { Reducer } from 'redux';
 
-// export interface ICanvasData {
-//   data: any
-// }
-
-// export interface CanvasDataModelType {
-//   namespace: 'canvas';
-//   state: ICanvasData;
-//   reducers: {
-//     update: Reducer<ICanvasData>;
-//   };
-// }
-
 const CanvasDataModel = {
   namespace: 'canvas',
 
@@ -22,7 +10,7 @@ const CanvasDataModel = {
       toArrowType: 'triangleSolid',
       scale: 1,
       locked: 0,
-    }
+    },
   },
 
   reducers: {
