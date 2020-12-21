@@ -308,9 +308,7 @@ class myComponent extends React.Component{
                               </Popconfirm>
                               <img
                                 alt="组件类型图片"
-                              // draggable="true"
                                 title="新组件"
-                                onDragStart={(ev) => this.onDrag(ev,image)}
                                 src={image}
                               />
                             </div>
