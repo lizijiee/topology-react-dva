@@ -339,6 +339,7 @@ class Index extends React.Component {
         this.state[key] = changedValues.state[key]
       }
     }
+    // changedValues.event0  EventComponent数据 0结尾
   }
 
   componentDidUpdate() {

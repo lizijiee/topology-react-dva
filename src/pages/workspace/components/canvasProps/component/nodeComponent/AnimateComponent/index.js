@@ -1,11 +1,11 @@
 import React from 'react';
-import { Node } from '@topology/core';
+import { Node } from 'topology-core/models/node';
 import { Form, Col, Collapse, Switch, Select } from 'antd';
 import { canvas } from '../../../index';
 
 const { Panel } = Collapse;
-const Page = ({ canvasData, form: { getFieldDecorator } }) => {
-  const node = canvasData.node;
+const Page = ({ node, form: { getFieldDecorator } }) => {
+  // const node = canvasData.node;
 
 
   const onHandleStyleSelectChange = (e) => {
@@ -125,7 +125,7 @@ const Page = ({ canvasData, form: { getFieldDecorator } }) => {
 
   const renderAnimateForm = () => {
     return (
-      <Form>
+      <div>
         <Col span={24}>
           <Form.Item label="特效">
             {getFieldDecorator('style', {
@@ -167,7 +167,7 @@ const Page = ({ canvasData, form: { getFieldDecorator } }) => {
             )}
           </Form.Item>
         </Col>
-      </Form>
+      </div>
     );
   };
 
@@ -182,4 +182,4 @@ const Page = ({ canvasData, form: { getFieldDecorator } }) => {
   );
 };
 
-export default Form.create()(Page);
+export default Page;

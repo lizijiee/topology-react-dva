@@ -1,21 +1,21 @@
 import React, { useState, useMemo } from 'react';
 import { Button, Collapse, Select, Col, Form, Input, Icon } from 'antd';
 import { useCallback } from 'react';
-import './index.css';
+import styles from './index.less';
 import { useEffect } from 'react';
 const { TextArea } = Input;
 const { Panel } = Collapse;
 const Page = ({
   form: { getFieldDecorator, validateFields, resetFields },
   onEventValueChange,
-  canvasData
+  node
 }) => {
 
-  const [eventData, setEventData] = useState(canvasData.node.events);
+  const [eventData, setEventData] = useState(node.events);
 
   useEffect(() => {
-    setEventData(canvasData.node.events);
-  }, [canvasData])
+    setEventData(node.events);
+  }, [node])
 
   /**
    * 新增事件
@@ -48,7 +48,7 @@ const Page = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const renderFontForm = (item, idx) => {
     return (
-      <Form>
+      <div>
         <Col span={24}>
           <Form.Item label="事件类型">
             {getFieldDecorator(`eventType${idx}`, {
@@ -67,7 +67,7 @@ const Page = ({
           </Form.Item>
         </Col>
         {renderFormByEventType(item, idx)}
-      </Form>
+      </div>
     );
   };
 
@@ -206,7 +206,7 @@ const Page = ({
       eventData[idx].action = +value[`event${idx}`];
       eventData[idx].value = e.target.value;
       eventData[idx].params = value[`params${idx}`] || '';
-      onEventValueChange(eventData);
+      // onEventValueChange(eventData);
     });
   };
 
@@ -253,7 +253,7 @@ const Page = ({
 
   return (
     <div>
-      <Button type="primary" className="event-button" onClick={onHandleAddEventListener}>
+      <Button type="primary" className={styles["event-button"]} onClick={onHandleAddEventListener}>
         新增事件
       </Button>
       {renderPanel}
@@ -261,4 +261,4 @@ const Page = ({
   );
 };
 
-export default Form.create()(Page);
+export default Page;

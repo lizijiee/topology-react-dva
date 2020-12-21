@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, InputNumber, Collapse, Input, Select, Tabs, Row, Col } from 'antd';
-import PicturesWall from '../../../picturesWall'
+import AnimateComponent from './AnimateComponent';
+import EventComponent from './EventComponent';
 import styles from './index.less';
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -176,8 +177,16 @@ class NodeComponent extends React.Component {
           </Collapse>
         </TabPane>
         <TabPane tab="事件" key="2" style={{ margin: 0 }} className={styles.tabsStyle} >
+          <EventComponent
+            node={this.state.node}
+            form={this.props.form}
+          />
         </TabPane>
         <TabPane tab="动效" key="3" style={{ margin: 0 }}>
+          <AnimateComponent
+            node={this.state.node}
+            form={this.props.form}
+          />
         </TabPane>
       </Tabs>
     </Form>
