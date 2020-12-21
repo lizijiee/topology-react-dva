@@ -8,6 +8,7 @@ export async function list(pageIndex, pageCount) {
   return request(`/api/topologies?pageIndex=${pageIndex}&pageCount=${pageCount}`);
 }
 
+// 迁移方法
 export async function  save(data) {
   data = Object.assign({}, data);
   for (const item of data.data.pens) {

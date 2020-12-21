@@ -7,7 +7,7 @@ class BasicLayout extends React.Component {
   render(){
     return (
     <div className={styles.page}>
-      <Headers />
+      {/* <Headers /> */}
       <div className={styles.body}>{this.props.children}</div>
     </div>
   )

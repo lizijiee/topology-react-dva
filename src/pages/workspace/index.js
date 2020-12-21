@@ -99,7 +99,7 @@ import PicturesWall from './components/picturesWall';
 
 import { Tabs } from 'antd';
 import myAnchorFn from './myAnchorFn.js'
-
+import Headers from './components/headers'
 const { TabPane } = Tabs;
 const C2S = window.C2S;
 const canvasOptions = {
@@ -118,10 +118,9 @@ class Index extends React.Component {
         desc: '',
         image: '',
         userId: '',
-        class: '',
+        class: '组件类别一',
         component: false,
         shared: false,
-
         tools: Tools,
         iconfont: { fontSize: '.24rem' },
         selected: {
@@ -155,8 +154,10 @@ class Index extends React.Component {
         }
       });
     }
-    this.setState({ id: this.props.location.query.id });
-    this.props.location.query.id&&this.getTopo(this.props.location.query.id);
+    if(this.props.location.query.id){
+      this.setState({ id: this.props.location.query.id });
+      this.getTopo(this.props.location.query.id);
+    }
   }
 
   canvasRegister() {
@@ -478,13 +479,20 @@ class Index extends React.Component {
     if (!this.canvas) {
       return;
     }
-    console.log(this.state);
     this.setState({
       data: this.canvas.data
     });
-
+    console.log(this.state);
     this.canvas.toImage('image/png', 1, async (blob) => {
       // const ret =await save(this.canvas.data)
+      /*
+          共计三步骤
+          1. 提交图片,若原来存在,先删除原有图片
+          2. 提交图片成功返回值
+              url: "/image/topology/thumb_57a4ad3348f4ef02.png"
+          3. 提交含图片url全部data数据
+              this.data.image = res.url
+      */
     });
     if (this.state.component) {
       this.state.componentData = this.canvas.toComponent();
@@ -624,7 +632,6 @@ class Index extends React.Component {
         class:className
       },
     });
-    this.state.selected.class=className;
     this.setState((preState)=> ({
       id: '',
       version: '',
@@ -640,53 +647,82 @@ class Index extends React.Component {
   }
   render() {
     return (
-      <div className={styles.page}>
-        {/* 左侧菜单 */}
-        <div className={styles.tools} >
-          <Tabs defaultActiveKey="1" className={styles.tabs} >
-            <TabPane tab="系统组件" key="1" >
-              {
-                this.state.tools.map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div className={styles.title}>{item.group}</div>
+      <div className={styles.wrapper}>
+        <Headers />
+        <div className={styles.page}>
+          {/* 左侧菜单 */}
+          <div className={styles.tools} >
+            <Tabs defaultActiveKey="1" className={styles.tabs} >
+              <TabPane tab="组件库" key="1" >
+                {
+                  this.props.type.typeList.map((item, index) => {
+                    return(
+                    <div key={item.id}>
+                      <div className={styles.title}>{item.name}</div>
                       <div className={styles.buttons}>
-                        {
-                          item.children.map((btn, i) => {
-                            return (
-                              <a key={i} title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
-                                <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
-                              </a>
-                            )
-                          })
-                        }
-                      </div>
+                          {
+                            item.images.map((image, i) => {
+                              return (
+                                <a key={image}  draggable={true} onDragStart={(ev) => this.onDrag(ev, image)}>
+                                  <img
+                                    // draggable="true"
+                                    alt="组件图片名称"
+                                    key={image}
+                                    title="新组件"
+                                    src={image}
+                                    />
+                                </a>
+                              )
+                            })
+                          }
+                        </div>
                     </div>
-                  )
-                })
-              }
-            </TabPane>
-            <TabPane tab="我的组件" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
-              <MyComponent data={this.state.selected} onEditTool={(val)=>{this.onEditTool(val)}}/>
-            </TabPane>
-            <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
-              <PicturesWall />
-            </TabPane>
-          </Tabs>
-        </div>
-        {/* 画布 */}
-        <div id="topology-canvas" className={styles.full} onContextMenu={this.hanleContextMenu} />
-        {/* 右侧菜单 */}
-        <div className={styles.props}>
-          <CanvasProps data={this.state.selected} className={this.state.class} onValuesChange={this.handlePropsChange} />
-        </div>
-        {/* 画布右键菜单 */}
-        <div style={this.state.contextmenu} >
-          <CanvasContextMenu data={this.state.selected} canvas={this.canvas} />
+                    )
+                  })
+                }
+                {
+                  this.state.tools.map((item, index) => {
+                    return (
+                      <div key={index}>
+                        <div className={styles.title}>{item.group}</div>
+                        <div className={styles.buttons}>
+                          {
+                            item.children.map((btn, i) => {
+                              return (
+                                <a key={i} title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
+                                  <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
+                                </a>
+                              )
+                            })
+                          }
+                        </div>
+                      </div>
+                    )
+                  })
+                }
+              </TabPane>
+              <TabPane tab="组件编辑" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
+                <MyComponent data={this.state.selected} onEditTool={(val)=>{this.onEditTool(val)}}/>
+              </TabPane>
+              {/* <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
+                <PicturesWall />
+              </TabPane> */}
+            </Tabs>
+          </div>
+          {/* 画布 */}
+          <div id="topology-canvas" className={styles.full} onContextMenu={this.hanleContextMenu} />
+          {/* 右侧菜单 */}
+          <div className={styles.props}>
+            <CanvasProps data={this.state.selected} className={this.state.class} onValuesChange={this.handlePropsChange} />
+          </div>
+          {/* 画布右键菜单 */}
+          <div style={this.state.contextmenu} >
+            <CanvasContextMenu data={this.state.selected} canvas={this.canvas} />
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default connect((state) => ({ event: state.event }))(Index);
+export default connect((state) => ({ event: state.event,type:state.type }))(Index);

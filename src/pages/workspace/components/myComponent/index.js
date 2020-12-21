@@ -6,25 +6,21 @@ import styles from './index.less';
 import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
 import ChangeInput from './changeInput';
+import {get, Upload} from './service';
 
 class myComponent extends React.Component{
   constructor(props){
     super(props);
       this.state = {
-        ModalText: 'Content of the modal',    //
+        ModalText: 'Content of the modal',
         visible: false,
         confirmLoading: false,
-        items:[
-            {id:1,name:'组件类别一'},
-            {id:2,name:'组件类别二'},
-            {id:3,name:'组件类别三'},
-        ],
         show: 0,                    // 列表气泡卡片索引
         showPopover: false,         // 气泡卡片显示隐藏
         index: 0,                   // 列表输入框索引
         showInput: false,           // 输入框显示隐藏
         isModalVisible: false,      // 编辑组件显示隐藏
-        record:''                   // 缓存组件类型，ele为最后一项
+        record:{},                  // 当前编辑组件类型
       };
     }
   componentDidMount() {
@@ -35,17 +31,24 @@ class myComponent extends React.Component{
     });
   };
 
-  submitOk =async () => {
-    // 提交数据
+  submitOk =async (values) => {
+    const { typeList } = this.props.type;
     this.setState({
       ModalText: 'The modal will be closed after two seconds',
       confirmLoading: true,
     });
-    // await 等待数据返回关闭弹框关闭Loading
     setTimeout(() => {
       this.setState({
         visible: false,
         confirmLoading: false,
+      });
+
+      let items=[...typeList,{ id: typeList.length+1, name:values.type, images:[] }];
+      this.props.dispatch({
+        type: 'type/update',
+        payload: {
+          typeList: items
+        }
       });
     }, 2000);
   };
@@ -58,24 +61,21 @@ class myComponent extends React.Component{
   check = () => {
     this.props.form.validateFields((err,values) => {
       if (!err) {
-        this.submitOk();
-        console.info('success', values);// values= { username: "12312312" }
+        this.submitOk(values);
       }
     });
   };
+
   moveDown=(index) => {
     this.resort(index,1);
   }
   resort(index,diff){
-    let items = this.state.items;
+    let items = this.props.type.typeList;
     let item = items[index];
     items.splice(index,1);
     items.splice(index + diff,0,item);
-    this.setState({items:items});
+    this.setState({items});
   }
-  // componentWillReceiveProps(nextProps){
-  //   console.log('nextProps',nextProps)
-  // }
 
   componentDidUpdate(prevProps) {
     // if (prevProps.yourModels !== this.props.yourModels) {
@@ -98,8 +98,13 @@ class myComponent extends React.Component{
     }
   };
   handleOk = (value) => {
-    this.setState((prevState)=>({items:prevState.items.map((e)=>e.id===value.id?value:e)}))
-    console.log('编辑组件库完成',value); //{type: "4543543543"} 修改完成值
+    this.props.dispatch({
+      type: 'type/update',
+      payload: {
+        typeList: this.props.type.typeList.map(e=>e.id===value.id?{...e,name:value.name,images:e.images?e.images:[]}:e)
+      }
+    });
+    console.log('编辑组件库完成',value);
   }
   //点击展示输入框
   handleChangeClick = () => {
@@ -128,11 +133,11 @@ class myComponent extends React.Component{
   };
   confirm(e) {
     console.log(e);
-    message.success('删除当前组件');
+    message.success('删除成功');
   }
   cancel(e) {
     console.log(e);
-    message.error('取消删除当前组件');
+    message.error('取消操作');
   }
   showEditComponentModal = (record) => {
     this.setState({
@@ -158,9 +163,86 @@ class myComponent extends React.Component{
 
     this.setState({isModalVisible:false})
   }
+  onImageUpload=(type)=> {
+    this.setState({isModalVisible:false})
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept='image/png,image/gif,image/jpeg';
+    input.multiple="multiple"
+    input.onchange = async event => {
+      const elem = event.target;
+      // Upload(elem.files[0], elem.files[0].name);
+      this.getBase64(elem.files,type);
+    };
+    input.click();
+  }
+  /**
+   * @description: 上传图片转化为Base64
+   * @param {files} async 上传图片文件列表
+   * @param {type} 组件类别
+   * @return {*}
+   */
+  getBase64=async (files,type)=>{
+    let uploadList =[];
+    const readFileAsync = file => new Promise(resolve=>{
+      const reader = new FileReader();   // 新建FileReader对象
+      reader.onload = (e)=> resolve(e.target.result);
+      reader.readAsDataURL(file)   // 将读取的文件转换成base64格式
+    })
+    for(let i=0;i<files.length;i++){
+      if (!/image\/\w+/.test(files[i].type)) {
+        message.error('请确保文件为图像类型');
+    　　return false;
+ 　　 }
+      uploadList.push(await readFileAsync(files[i]))
+    }
+    let typeList=this.props.type.typeList.map((ele)=>{
+      if(ele.id===this.state.record.id){
+        ele.images=[...ele.images,...uploadList]
+      }
+      return ele
+    })
+    this.props.dispatch({
+      type: 'type/update',
+      payload: {typeList}
+    });
+    console.log(this.props.type.typeList,typeList); // 上传放到哪个分组下面呢。
+  }
+  // getBase64(url, callback) {
+  //   var Img = new Image(),
+  //     dataURL = '';
+  //   Img.src = url + '?v=' + Math.random();
+  //   Img.setAttribute('crossOrigin', 'Anonymous');
+  //   Img.onload = function () {
+  //     var canvas = document.createElement('canvas'),
+  //       width = Img.width,
+  //       height = Img.height;
+  //     canvas.width = width;
+  //     canvas.height = height;
+  //     canvas.getContext('2d').drawImage(Img, 0, 0, width, height);
+  //     dataURL = canvas.toDataURL('image/jpeg');
+  //     return callback ? callback(dataURL) : null;
+  //   };
+  // }
+
+  onDrag = (event, image) => {
+    event.dataTransfer.setData(
+      'Text',
+      JSON.stringify({
+        name: 'image',
+        rect: {
+          width: 100,
+          height: 100
+        },
+        image
+      })
+    );
+  };
+
   render() {
       const { visible, confirmLoading, items } = this.state;
       const { getFieldDecorator } = this.props.form;
+      const { typeList } = this.props.type;
       const formItemLayout = {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
@@ -183,9 +265,9 @@ class myComponent extends React.Component{
     return (
       <>
       <div className={styles.tools}>
-        {/* <FlipMove> */}
+        <FlipMove>
             {
-              items.map((ele,index) => {
+              typeList.map((ele,index) => {
                 return (
                   <div key={ele.id}>
                     <div className={styles.group}>
@@ -210,17 +292,47 @@ class myComponent extends React.Component{
                     </div>
                     <div className={styles.buttons}>
                       <div className={styles.wrapper}>
-                      <Popconfirm
-                        title="是否确认删除？"
-                        onConfirm={this.confirm}
-                        onCancel={this.cancel}
-                        okText="确定"
-                        cancelText="取消"
-                      >
-                        <i className={["iconfont icon-close",styles.close].join(' ')}/>
-                      </Popconfirm>
-                        <img draggable="true" title="新组件" src={require("./image/thumb.png")} />
+                        <Popconfirm
+                          title="是否确认删除？"
+                          onConfirm={this.confirm}
+                          onCancel={this.cancel}
+                          okText="确定"
+                          cancelText="取消"
+                        >
+                          <i className={["iconfont icon-close",styles.close].join(' ')}/>
+                        </Popconfirm>
+                          <img
+                            // draggable="true"
+                            alt="图片"
+                            title="新组件"
+                            onDragStart={(ev) => this.onDrag(ev, ele)}
+                            src={require("./image/thumb.png")}
+                          />
                       </div>
+                      {
+                        ele.images.map((image,i) => {
+                          return (
+                            <div className={styles.wrapper} key={image}>
+                              <Popconfirm
+                                title="是否确认删除？"
+                                onConfirm={this.confirm}
+                                onCancel={this.cancel}
+                                okText="确定"
+                                cancelText="取消"
+                              >
+                                <i className={["iconfont icon-close",styles.close].join(' ')}/>
+                              </Popconfirm>
+                              <img
+                                alt="组件类型图片"
+                              // draggable="true"
+                                title="新组件"
+                                onDragStart={(ev) => this.onDrag(ev,image)}
+                                src={image}
+                              />
+                            </div>
+                          )
+                        })
+                      }
                       <span
                         title="我来添加组件"
                         draggable="true"
@@ -240,7 +352,7 @@ class myComponent extends React.Component{
                         footer={null}
                       >
                        {/* <PicturesWall /> */}
-                        <p onClick={()=>{this.setState({isModalVisible:false})}}>上传组件图片</p>
+                        <p onClick={()=>{this.onImageUpload(ele)}}>上传组件图片</p>
                         <p onClick={()=>{this.createComponent()}}>绘制组件</p>
                       </Modal>
                     </div>
@@ -248,14 +360,14 @@ class myComponent extends React.Component{
                 )
               })
             }
-        {/* </FlipMove> */}
+        </FlipMove>
       </div>
 
       <div className={styles.setting}>
         <button
           className={styles.button}
           onClick={this.showModal}
-        > + 添加组件库</button>
+        > + 添加组件类别</button>
       </div>
       <Modal
         title="添加"
@@ -289,4 +401,4 @@ class myComponent extends React.Component{
 
 const WrappedmyComponent = Form.create({ name: 'dynamic_rule' })(myComponent);
 
-export default connect((state) => ({class: state.class}))(WrappedmyComponent);
+export default connect((state) => ({class: state.class,type:state.type}))(WrappedmyComponent);

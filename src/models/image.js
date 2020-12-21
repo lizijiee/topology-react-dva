@@ -1,57 +1,26 @@
 const Imagefiles = {
-  namespace: 'image',
+  namespace: 'type',
   // state初始化
   state: {
-      fileList:  [
-        {
-          uid: '-1',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-          uid: '-2',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-          uid: '-3',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-          uid: '-4',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        // {
-        //   uid: '-xxx',
-        //   percent: 50,
-        //   name: 'image.png',
-        //   status: 'uploading',
-        //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // },
-        // {
-        //   uid: '-5',
-        //   name: 'image.png',
-        //   status: 'error',
-        // },
-      ],
+    typeList:[
+      {id:1,name:'组件类别一',images:[]},
+      {id:2,name:'组件类别二',images:[]},
+      {id:3,name:'组件类别三',images:[]},
+    ],
   },
-  // 修改state值，类似setState
   reducers: {
-      //要想改变state中的数据，必须通过reducers，
-      //payload是参数
       update(state, action) {
-        console.log('action:', action)
           return {
               ...state,
-              fileList: action.payload.fileList
-          }; //...浅拷贝state,并设置update的data值
-      }
+              typeList: action.payload.typeList
+          };
+      },
+      add(state, action) {
+          return {
+              ...state,
+              typeList: action.payload.typeList
+          };
+      },
   }
 }
 export default Imagefiles;
