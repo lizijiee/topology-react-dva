@@ -302,6 +302,19 @@ class Index extends React.Component {
   onDrag(event, node) {
     event.dataTransfer.setData('Text', JSON.stringify(node.data));
   }
+  onDragImage = (event, image) => {
+    event.dataTransfer.setData(
+      'Text',
+      JSON.stringify({
+        name: 'image',
+        rect: {
+          width: 100,
+          height: 100
+        },
+        image
+      })
+    );
+  };
 
   handlePropsChange = (props, changedValues, allValues) => {
     if (changedValues.node) {
@@ -411,7 +424,7 @@ class Index extends React.Component {
     this.handle_replace(data);
     router.push('/workspace');
     /*
-         const name = file.name.replace('.json', '');
+    const name = file.name.replace('.json', '');
     this.data.name = name;
     Store.set('file', this.data);
     const reader = new FileReader();
@@ -663,7 +676,7 @@ class Index extends React.Component {
                           {
                             item.images.map((image, i) => {
                               return (
-                                <a key={image}  draggable={true} onDragStart={(ev) => this.onDrag(ev, image)}>
+                                <a key={image}  draggable={true} onDragStart={(ev) => this.onDragImage(ev, image)}>
                                   <img
                                     // draggable="true"
                                     alt="组件图片名称"

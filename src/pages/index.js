@@ -55,8 +55,7 @@ class Index extends React.Component {
     return (
       <div className={styles.page}>
         <div className={styles.nav}>
-        {/* <label>热门图文</label> */}
-        <Button onClick={() => {router.push('/workspace')}}>新建组态</Button>
+          <Button onClick={() => {router.push('/workspace')}}>新建组态</Button>
         </div>
         <div className="flex wrap">
           {this.state.data.list.map((item, index) => {

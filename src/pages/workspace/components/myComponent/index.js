@@ -225,20 +225,6 @@ class myComponent extends React.Component{
   //   };
   // }
 
-  onDrag = (event, image) => {
-    event.dataTransfer.setData(
-      'Text',
-      JSON.stringify({
-        name: 'image',
-        rect: {
-          width: 100,
-          height: 100
-        },
-        image
-      })
-    );
-  };
-
   render() {
       const { visible, confirmLoading, items } = this.state;
       const { getFieldDecorator } = this.props.form;
@@ -302,10 +288,8 @@ class myComponent extends React.Component{
                           <i className={["iconfont icon-close",styles.close].join(' ')}/>
                         </Popconfirm>
                           <img
-                            // draggable="true"
                             alt="图片"
                             title="新组件"
-                            onDragStart={(ev) => this.onDrag(ev, ele)}
                             src={require("./image/thumb.png")}
                           />
                       </div>

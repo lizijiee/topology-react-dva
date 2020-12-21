@@ -75,8 +75,7 @@ const errorHandler = (error) => {
 const request = extend({
   errorHandler, // 默认错误处理
   headers: {
-    // 'Authorization': Cookie.get('token')
-    'Authorization': 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDgzOTYwNjQsInJvbGUiOiIiLCJ1aWQiOiI1ZmIzY2UzZWNkOWEzYTY5NzBiMmE4MmQiLCJ1c2VybmFtZSI6ImxpemlqaWUiLCJ2aXAiOjAsInZpcEV4cGlyeSI6LTYyMTM1NTk2ODAwfQ.FJpHzIUDcuItv7jT9Yk48rpzs6p1U01bghWyRCUnY5UjPxISrTHFfTnRpSd4-iLMkPlXDiYHvLf3VeZka-QnUg'
+    'Authorization': Cookie.get('token')
   },
   credentials: 'omit'
 });
