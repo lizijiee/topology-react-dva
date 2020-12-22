@@ -6,6 +6,7 @@ import styles from './index.less';
 import FlipMove from 'react-flip-move';
 import SettingPopover from './settingPopover';
 import ChangeInput from './changeInput';
+import DrawComponent from './drawComponent';
 import {get, Upload} from './service';
 
 class myComponent extends React.Component{
@@ -19,8 +20,9 @@ class myComponent extends React.Component{
         showPopover: false,         // 气泡卡片显示隐藏
         index: 0,                   // 列表输入框索引
         showInput: false,           // 输入框显示隐藏
-        isModalVisible: false,      // 编辑组件显示隐藏
+        // isModalVisible: false,      // 编辑组件显示隐藏
         record:{},                  // 当前编辑组件类型
+        isDrawVisible: false        // 绘制组件显示隐藏
       };
     }
   componentDidMount() {
@@ -140,17 +142,24 @@ class myComponent extends React.Component{
     message.error('取消操作');
   }
   showEditComponentModal = (record) => {
+    record.visible=true;
     this.setState({
-      isModalVisible: true,
       record
     });
   }
-  closeEditComponentModal = () => {
-    this.setState({
-      isModalVisible: false,
-    });
+  closeEditComponentModal = (record) => {
+    record.visible=false;
   }
-  createComponent(){
+  createComponent(record){
+    record.visible=false;
+    record.canvasVisible=true;
+    const typeList=JSON.parse(JSON.stringify(this.props.type.typeList))
+    this.props.dispatch({
+      type: 'type/update',
+      payload: {
+        typeList
+      }
+    });
     this.props.onEditTool(this.state.record.name);
     // router.push({
     //   pathname: '/workspace',
@@ -160,11 +169,10 @@ class myComponent extends React.Component{
     //   },
     // });
     // this.props.dispatch({type:'class/saveClassInfo',payload:{class:this.state.record.name}})
-
-    this.setState({isModalVisible:false})
   }
+
   onImageUpload=(type)=> {
-    this.setState({isModalVisible:false})
+    type.visible=false;
     const input = document.createElement('input');
     input.type = 'file';
     input.accept='image/png,image/gif,image/jpeg';
@@ -254,6 +262,7 @@ class myComponent extends React.Component{
         <FlipMove>
             {
               typeList.map((ele,index) => {
+                // console.log(ele)
                 return (
                   <div key={ele.id}>
                     <div className={styles.group}>
@@ -328,15 +337,15 @@ class myComponent extends React.Component{
                         title="请选择操作"
                         okText="确定"
                         cancelText="取消"
-                        visible={this.state.isModalVisible}
+                        visible={ele.visible}
                         // onOk={handleOk}
-                        onCancel={this.closeEditComponentModal}
+                        onCancel={()=>{this.closeEditComponentModal(ele)}}
                         footer={null}
                       >
-                       {/* <PicturesWall /> */}
                         <p onClick={()=>{this.onImageUpload(ele)}}>上传组件图片</p>
-                        <p onClick={()=>{this.createComponent()}}>绘制组件</p>
+                        <p onClick={()=>{this.createComponent(ele)}}>绘制组件</p>
                       </Modal>
+                      <DrawComponent record={ele}/>
                     </div>
                   </div>
                 )
