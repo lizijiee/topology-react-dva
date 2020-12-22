@@ -10,8 +10,11 @@
     .canvas{
       overflow: hidden;
       .menu{
+        margin:1rem 0 0 0;
+        padding: 0.5rem 0 0 0.2rem;
+        padding-top:0.5rem;
         width: 2rem;
-
+        background-color: #f8f8fa;
         .tools{
           .title {
             color: #0d1a26;
@@ -30,7 +33,6 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            padding:0.1rem 0 0 .2rem;
             line-height: 1;
             a {
               display: inline-block;
@@ -52,6 +54,23 @@
               width: 0.4rem;
               height: 0.4rem;
               padding: 0.05rem 0.1rem 0.05rem 0;
+            }
+          }
+        }
+        .line{
+
+          .item{
+            overflow: hidden;
+            height: 0.4rem;
+            span{
+              width: .7rem;
+              float: left;
+            }
+            i{
+              font-size: .4rem!important;
+              float: left;
+              line-height: .28rem;
+              padding: 0;
             }
           }
         }

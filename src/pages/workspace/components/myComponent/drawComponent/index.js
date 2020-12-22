@@ -67,10 +67,9 @@ class drawComponent extends React.Component{
               }
               </div>
               <div className={styles.line}>
-                <div>曲线</div>
-                <div>线段</div>
-                <div>直线</div>
-                <div>脑图曲线</div>
+                <div className={styles.item}><span>曲线：</span><i className="icon-curve iconfont"></i></div>
+                <div className={styles.item}><span>折线:</span><i className="icon-polyline iconfont"></i></div>
+                <div className={styles.item}><span>直线:</span><i className="icon-line iconfont"></i></div>
               </div>
             </div>
             <Button>保存按钮</Button>
