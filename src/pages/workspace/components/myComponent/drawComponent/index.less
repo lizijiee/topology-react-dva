@@ -1,15 +1,20 @@
-:global(.ant-modal-content){
-  width: 9rem;
-  margin: auto;
-}
 .draw-modal{
   width: 9rem!important;
+  top: 70px;
+
+  :global(.ant-modal-content){
+    width: 9rem;
+    margin: auto;
+  }
 
   :global(.ant-modal-body){
+    overflow: hidden;
 
     .canvas{
       overflow: hidden;
+
       .menu{
+        float: left;
         margin:1rem 0 0 0;
         padding: 0.5rem 0 0 0.2rem;
         padding-top:0.5rem;
@@ -75,10 +80,16 @@
           }
         }
       }
-      :global(.ant-btn){
-
+      .draw-canvas{
         float: right;
+        width: calc(100% - 2rem);
+        height: 470px;
       }
+
+    }
+
+    :global(.ant-btn){
+      float: right;
     }
   }
 }

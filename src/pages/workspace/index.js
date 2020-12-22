@@ -103,7 +103,7 @@ import Headers from './components/headers'
 const { TabPane } = Tabs;
 const C2S = window.C2S;
 const canvasOptions = {
-  rotateCursor: '/img/rotate.cur'
+  rotateCursor: '/img/rotate.cur',
 };
 class Index extends React.Component {
   constructor(props){
@@ -143,6 +143,7 @@ class Index extends React.Component {
   componentDidMount() {
     this.canvasRegister();
     canvasOptions.on = this.onMessage;
+    console.log('canvasOptions',canvasOptions)
     this.canvas = new Topology('topology-canvas', canvasOptions);
     document.onclick = event => {
       this.setState({
