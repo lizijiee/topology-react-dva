@@ -670,7 +670,7 @@ class Index extends React.Component {
           {/* 左侧菜单 */}
           <div className={styles.tools} >
             <Tabs defaultActiveKey="1" className={styles.tabs} >
-              <TabPane tab="组件库" key="1" >
+              <TabPane tab="组件库" key="2" >
                 {
                   this.props.type.typeList.map((item, index) => {
                     return(
@@ -718,7 +718,7 @@ class Index extends React.Component {
                   })
                 }
               </TabPane>
-              <TabPane tab="组件编辑" key="2" className={styles.tabsStyle} style={{ margin: 0 }}>
+              <TabPane tab="组件编辑" key="1" className={styles.tabsStyle} style={{ margin: 0 }}>
                 <MyComponent data={this.state.selected} onEditTool={(val)=>{this.onEditTool(val)}}/>
               </TabPane>
               {/* <TabPane tab="我的图片" key="3" style={{ color: "red" }}>
