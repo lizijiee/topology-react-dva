@@ -16,11 +16,12 @@
       .menu{
         float: left;
         margin:1rem 0 0 0;
-        padding: 0.5rem 0 0 0.2rem;
+        padding: 0.5rem 0 0 0;
         padding-top:0.5rem;
         width: 2rem;
         background-color: #f8f8fa;
         .tools{
+          margin-left: 0.2rem;
           .title {
             color: #0d1a26;
             font-weight: 600;
@@ -41,6 +42,7 @@
             line-height: 1;
             a {
               display: inline-block;
+              color: rgba(0, 0, 0, 0.65);
               // color: @text-color;
               line-height: 1;
               width: 0.4rem;
@@ -63,20 +65,37 @@
           }
         }
         .line{
-
+          border-top: 1px solid #e8e8e8;
           .item{
             overflow: hidden;
             height: 0.4rem;
+            padding-left: 0.2rem;
+            transition: all .3s;
+            cursor: pointer;
+
+            &:hover{
+              // background: #fafafa;
+              background: #e6f7ff;
+              border-radius: 3px solid #e8e8e8;
+            }
+
             span{
               width: .7rem;
               float: left;
+              line-height: 0.4rem;
             }
+
             i{
               font-size: .4rem!important;
               float: left;
-              line-height: .28rem;
+              line-height: 0.4rem;
               padding: 0;
             }
+          }
+          .active{
+            background-color: #e8e8e8!important;
+            // background: #e6f7ff;
+            border-radius: 5px solid #e8e8e8;
           }
         }
       }

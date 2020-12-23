@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.less';
-import Headers from './headers';
+// import Headers from './headers';
 
 class BasicLayout extends React.Component {
 

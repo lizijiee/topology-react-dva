@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Modal, Button } from 'antd';
 
 import styles from './index.less';
-import { Tools } from '@/utils/tools';
+import { Tools } from '@/utils/drawTools';
 
 
 import { Topology } from 'topology-core';
@@ -53,53 +53,38 @@ import {
 } from 'topology-flow-diagram';
 import { rectangle } from 'topology-core/middles/nodes/rectangle';
 
-import {
-  activityFinal,
-  activityFinalIconRect,
-  activityFinalTextRect,
-  swimlaneV,
-  swimlaneVIconRect,
-  swimlaneVTextRect,
-  swimlaneH,
-  swimlaneHIconRect,
-  swimlaneHTextRect,
-  fork,
-  forkHAnchors,
-  forkIconRect,
-  forkTextRect,
-  forkVAnchors
-} from 'topology-activity-diagram';
-import {
-  simpleClass,
-  simpleClassIconRect,
-  simpleClassTextRect,
-  interfaceClass,
-  interfaceClassIconRect,
-  interfaceClassTextRect
-} from 'topology-class-diagram';
-import {
-  lifeline,
-  lifelineAnchors,
-  lifelineIconRect,
-  lifelineTextRect,
-  sequenceFocus,
-  sequenceFocusAnchors,
-  sequenceFocusIconRect,
-  sequenceFocusTextRect
-} from 'topology-sequence-diagram';
-
-
 import myAnchorFn from '../../../myAnchorFn';
 
 const canvasOptions = {
   rotateCursor: '/img/rotate.cur',
 };
+const lineMenu=[
+  {name:'曲线',type:'curve'},
+  {name:'折线',type:'polyline'},
+  {name:'直线',type:'line'}
+]
 class drawComponent extends React.Component{
   constructor(props){
     super(props);
       this.state = {
         tools: Tools,
-        canvasVisible:this.props.record.canvasVisible
+        canvasVisible: this.props.record.canvasVisible,
+        currentIndex: 0,
+        event: '',
+        selected: {
+          node: null,
+          line: null,
+          multi: false,
+          nodes: null,
+          locked: false,
+        },
+        canvas: {
+          lineName: 'curve',
+          fromArrowType: '',
+          toArrowType: 'triangleSolid',
+          scale: 1,
+          locked: 0,
+        },
       };
     }
     componentDidMount() {
@@ -148,21 +133,6 @@ class drawComponent extends React.Component{
       registerNode('flowDisplay', flowDisplay, flowDisplayAnchors, flowDisplayIconRect, flowDisplayTextRect);
       registerNode('flowParallel', flowParallel, flowParallelAnchors, null, null);
       registerNode('flowComment', flowComment, flowCommentAnchors, null, null);
-
-      // activity
-      registerNode('activityFinal', activityFinal, null, activityFinalIconRect, activityFinalTextRect);
-      registerNode('swimlaneV', swimlaneV, null, swimlaneVIconRect, swimlaneVTextRect);
-      registerNode('swimlaneH', swimlaneH, null, swimlaneHIconRect, swimlaneHTextRect);
-      registerNode('forkH', fork, forkHAnchors, forkIconRect, forkTextRect);
-      registerNode('forkV', fork, forkVAnchors, forkIconRect, forkTextRect);
-
-      // class
-      registerNode('simpleClass', simpleClass, null, simpleClassIconRect, simpleClassTextRect);
-      registerNode('interfaceClass', interfaceClass, null, interfaceClassIconRect, interfaceClassTextRect);
-
-      // sequence
-      registerNode('lifeline', lifeline, lifelineAnchors, lifelineIconRect, lifelineTextRect);
-      registerNode('sequenceFocus', sequenceFocus, sequenceFocusAnchors, sequenceFocusIconRect, sequenceFocusTextRect);
     }
     /**
      * 监听画布上元素的事件
@@ -219,8 +189,7 @@ class drawComponent extends React.Component{
           });
           break;
         case 'moveOut':
-
-          break;
+        break;
         case 'moveNodes':
         case 'resizeNodes':
           if (data.length > 1) {
@@ -290,12 +259,81 @@ class drawComponent extends React.Component{
         });
       }
     }
+    getLocked(data) {
+      let locked = true
+      if (data.nodes && data.nodes.length) {
+        for (const item of data.nodes) {
+          if (!item.locked) {
+            locked = false
+            break
+          }
+        }
+      }
+      if (locked && data.lines) {
+        for (const item of data.lines) {
+          if (!item.locked) {
+            locked = false
+            break
+          }
+        }
+      }
+
+      return locked
+    }
+
     onDrag(event, node) {
-      console.log(node)
       event.dataTransfer.setData('Text', JSON.stringify(node.data));
     }
+    handle_curve(data) {
+      this.canvas.data.lineName = 'curve';
+      this.props.dispatch({
+        type: 'canvas/update',
+        payload: {
+          data: this.canvas.data
+        }
+      });
+    }
+
+    handle_polyline(data) {
+      this.canvas.data.lineName = 'polyline';
+      this.props.dispatch({
+        type: 'canvas/update',
+        payload: {
+          data: this.canvas.data
+        }
+      });
+    }
+    handle_line(data) {
+      this.canvas.data.lineName = 'line';
+      this.props.dispatch({
+        type: 'canvas/update',
+        payload: {
+          data: this.canvas.data
+        }
+      });
+    }
+    handle_save(data) {
+      if (!this.canvas) {
+        return;
+      }
+      console.log('待保存数据',this.canvas.data);
+      this.canvas.toImage('image/png', 1, async (blob) => {
+        // const ret =await save(this.canvas.data)
+        /*
+            共计三步骤
+            1. 提交图片,若原来存在,先删除原有图片
+            2. 提交图片成功返回值
+                url: "/image/topology/thumb_57a4ad3348f4ef02.png"
+            3. 提交含图片url全部data数据
+                this.data.image = res.url
+        */
+      });
+      if (this.state.component) {
+        this.state.componentData = this.canvas.toComponent();
+      }
+    }
     handleOK=()=>{
-      console.log(2222)
+      this.setState({event:'save'});
       this.props.record.canvasVisible=false;
       const typeList=JSON.parse(JSON.stringify(this.props.type.typeList))
       this.props.dispatch({
@@ -314,27 +352,39 @@ class drawComponent extends React.Component{
           typeList
         }
       });
-      console.log(this.props.record)
     };
-    componentDidUpdate(){
-      if (this.props.record.canvasVisible !== this.state.canvasVisible) {
-        console.log(Topology)
+    componentDidUpdate(prevProps,prevState){
+      if (!this.state.event&&this.props.record.canvasVisible !== this.state.canvasVisible) {
         setTimeout(()=>{
           this.canvas = new Topology('draw-canvas', canvasOptions);
         },500) // 确保画布的父元素存在
       }
+        // onMenuClick 方法
+        if (this['handle_' + this.state.event]) {
+          this['handle_' + this.state.event]();
+        }
     }
-
+    setCurrentIndex=(event,ele,i)=>{
+      event.stopPropagation();
+      this.setState({currentIndex: i,event:ele.type,});
+    }
+    handlePropsChange(){
+      // this.state.selected.node[key][k] = changedValues.node[key][k];
+      // 通知属性更新，刷新
+      this.canvas.updateProps(this.state.selected.node);
+    }
   render() {
-      const { record }=this.props;
+    const { record }=this.props;
     return (
       <>
         <Modal
           className={styles['draw-modal']}
           title="组件绘制"
+          destroyOnClose
           okText="确定"
           cancelText="取消"
           visible={record.canvasVisible}
+          // visible={true}
           // onOk={handleOk}
           onCancel={this.handleCancel}
           footer={null}
@@ -343,32 +393,50 @@ class drawComponent extends React.Component{
             <div className={styles.menu} >
               <div className={styles.tools}>
               {
-                  this.state.tools.map((item, index) => {
-                    if(item.group==='基本形状'){
-                      return (
-                        <div key={index}>
-                          {/* <div className={styles.title}>{item.group}</div> */}
-                          <div className={styles.buttons}>
-                            {
-                              item.children.map((btn, i) => {
-                                return (
-                                  <a key={i} title={btn.name} draggable={true} onDragStart={(ev) => { this.onDrag(ev, btn) }}>
-                                    <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
-                                  </a>
-                                )
-                              })
-                            }
-                          </div>
+                this.state.tools.map((item, index) => {
+                  if(item.group==='基本形状'){
+                    return (
+                      <div key={index}>
+                        {/* <div className={styles.title}>{item.group}</div> */}
+                        <div className={styles.buttons}>
+                          {
+                            item.children.map((btn, i) => {
+                              return (
+                                <a
+                                  key={i}
+                                  title={btn.name}
+                                  draggable={true}
+                                  onDragStart={(ev) => { this.onDrag(ev, btn) }}
+                                >
+                                  <i className={'iconfont ' + btn.icon} style={this.state.iconfont} />
+                                </a>
+                              )
+                            })
+                          }
                         </div>
-                      )
-                    }
-                  })
+                      </div>
+                    )
+                  }
+                })
               }
               </div>
-              <div className={styles.line}>
-                <div className={styles.item}><span>曲线：</span><i className="icon-curve iconfont"></i></div>
+              <div className={styles.line} >
+                {
+                  lineMenu.map((item, i)=>(
+                    <div
+                      // className={styles.item}
+                      className={this.state.currentIndex===i?`${styles.item} ${styles.active}`:styles.item}
+                      key={item.name}
+                      onClick={(e)=>{this.setCurrentIndex(e,item,i)}}
+                    >
+                      <span>{item.name} :</span>
+                      <i className={`icon-${item.type} iconfont`}></i>
+                    </div>
+                  ))
+                }
+                {/* <div className={styles.item}><span>曲线：</span><i className="icon-curve iconfont"></i></div>
                 <div className={styles.item}><span>折线:</span><i className="icon-polyline iconfont"></i></div>
-                <div className={styles.item}><span>直线:</span><i className="icon-line iconfont"></i></div>
+                <div className={styles.item}><span>直线:</span><i className="icon-line iconfont"></i></div> */}
               </div>
             </div>
             <div

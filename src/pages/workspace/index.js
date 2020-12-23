@@ -597,6 +597,7 @@ class Index extends React.Component {
   }
 
   handle_polyline(data) {
+    console.log(this.canvas.data);
     this.canvas.data.lineName = 'polyline';
     this.props.dispatch({
       type: 'canvas/update',
