@@ -317,6 +317,8 @@ class drawComponent extends React.Component{
         return;
       }
       console.log('待保存数据',this.canvas.data);
+      console.log(this.canvas)
+      this.canvas.data.lineName = 'curve';
       this.canvas.toImage('image/png', 1, async (blob) => {
         // const ret =await save(this.canvas.data)
         /*
@@ -388,6 +390,9 @@ class drawComponent extends React.Component{
           // onOk={handleOk}
           onCancel={this.handleCancel}
           footer={null}
+          afterClose={()=>{
+            this.setState({event: '',currentIndex: 0})
+          }}
         >
           <div className={styles.canvas}>
             <div className={styles.menu} >
