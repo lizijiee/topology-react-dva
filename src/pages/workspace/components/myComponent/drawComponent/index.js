@@ -5,10 +5,7 @@ import { Modal, Button } from 'antd';
 import styles from './index.less';
 import { Tools } from '@/utils/drawTools';
 
-
-import { Topology } from 'topology-core';
-// import { Options } from 'topology-core/options';
-import { registerNode } from 'topology-core/middles';
+import { Topology, registerNode} from '@topology/core';
 import {
   flowData,
   flowDataAnchors,
@@ -51,7 +48,7 @@ import {
   myTextRect,  //文字位置区域
   myAnchors  //锚点
 } from 'topology-flow-diagram';
-import { rectangle } from 'topology-core/middles/nodes/rectangle';
+import { rectangle } from '@topology/core';
 
 import myAnchorFn from '../../../myAnchorFn';
 
@@ -317,7 +314,6 @@ class drawComponent extends React.Component{
         return;
       }
       console.log('待保存数据',this.canvas.data);
-      console.log(this.canvas)
       this.canvas.data.lineName = 'curve';
       this.canvas.toImage('image/png', 1, async (blob) => {
         // const ret =await save(this.canvas.data)

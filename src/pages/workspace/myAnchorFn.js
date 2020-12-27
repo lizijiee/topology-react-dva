@@ -1,8 +1,4 @@
-// import { Node, Direction, AnchorMode } from 'topology-core';
-import { Point } from 'topology-core/models/point';
-import { Direction} from 'topology-core/models/direction';
-import { Node } from 'topology-core/models/node';
-import { AnchorMode } from 'topology-core/models/status';
+import { Point, Direction } from '@topology/core';
 
 
 export default function myAnchors(node) {

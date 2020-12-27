@@ -8,9 +8,7 @@ import { get,save } from '@/services/topology';
 
 import * as FileSaver from 'file-saver';
 
-import { Topology } from 'topology-core';
-// import { Options } from 'topology-core/options';
-import { registerNode } from 'topology-core/middles';
+import { Topology, registerNode } from '@topology/core';
 import {
   flowData,
   flowDataAnchors,
@@ -53,7 +51,7 @@ import {
   myTextRect,  //文字位置区域
   myAnchors  //锚点
 } from 'topology-flow-diagram';
-import { rectangle } from 'topology-core/middles/nodes/rectangle';
+import { rectangle } from '@topology/core';
 
 import {
   activityFinal,
@@ -162,7 +160,7 @@ class Index extends React.Component {
   }
 
   canvasRegister() {
-    registerNode('rectangle', rectangle, myAnchorFn, null, null, true);
+    registerNode('rectangle', rectangle, myAnchorFn, null, null);
     registerNode('flowData', flowData, flowDataAnchors, flowDataIconRect, flowDataTextRect);
     registerNode('flowSubprocess', flowSubprocess, null, flowSubprocessIconRect, flowSubprocessTextRect);
     registerNode('flowDb', flowDb, null, flowDbIconRect, flowDbTextRect);
@@ -258,7 +256,6 @@ class Index extends React.Component {
         });
         break;
       case 'moveOut':
-
         break;
       case 'moveNodes':
       case 'resizeNodes':
@@ -328,7 +325,6 @@ class Index extends React.Component {
             this.state.selected.node[key][k] = changedValues.node[key][k];
           }
         } else {
-          console.log('this.state.selected',this.state.selected,'changedValues:',changedValues.node[key])
           this.state.selected.node[key] = changedValues.node[key];
         }
       }

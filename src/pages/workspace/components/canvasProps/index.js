@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Form, Input, Select, Row, Col } from 'antd';
-import { FormComponentProps } from 'antd/es/form';
-import { Node } from 'topology-core/models/node';
-import { Line } from 'topology-core/models/line';
 import styles from './index.less';
 import NodeComponent from './component/nodeComponent';
 const { Option } = Select;

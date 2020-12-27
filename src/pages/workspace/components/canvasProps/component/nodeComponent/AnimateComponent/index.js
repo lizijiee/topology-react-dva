@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Node } from 'topology-core/models/node';
+import { Node } from '@topology/core';
 import { Form, Col, Collapse, Switch, Select } from 'antd';
 
 const { Panel } = Collapse;

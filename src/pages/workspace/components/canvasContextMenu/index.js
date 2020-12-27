@@ -1,9 +1,4 @@
 import React from 'react';
-
-import { Topology } from 'topology-core';
-import { Node } from 'topology-core/models/node';
-import { Line } from 'topology-core/models/line';
-
 import styles from './index.less';
 
 
